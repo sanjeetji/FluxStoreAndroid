@@ -13,7 +13,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "sanjeet.demo.composeapp"
+        applicationId = "com.flux.store"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

@@ -13,7 +13,12 @@ import com.flux.store.ui.screens.home.ProfileScreen
 import com.flux.store.viewmodel.HomeViewModel
 
 fun NavGraphBuilder.homeNavigation(
-    navigateWithPayload: (String, Any?) -> Unit,
+    navigateWithPayload: (
+        route: String,
+        payload: Any?,
+        popUpToRoute: String?,
+        inclusive: Boolean
+    ) -> Unit,
     navController: NavHostController,
     bottomBarVisible: MutableState<Boolean>
 ) {

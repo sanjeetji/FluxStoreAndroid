@@ -11,7 +11,12 @@ import com.flux.store.viewmodel.IntroViewmodel
 import com.flux.store.viewmodel.SplashViewModel
 
 fun NavGraphBuilder.splashNavigation(
-    navigateWithPayload: (String, Any?) -> Unit,
+    navigateWithPayload: (
+        route: String,
+        payload: Any?,
+        popUpToRoute: String?,
+        inclusive: Boolean
+    ) -> Unit,
     navController: NavHostController
 ) {
     composable(route = SplashRoutes.SplashScreen.toRoute()) {

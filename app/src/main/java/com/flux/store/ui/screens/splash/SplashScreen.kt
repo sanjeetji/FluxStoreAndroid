@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 import com.flux.store.R
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
@@ -33,28 +32,33 @@ import com.flux.store.utils.AnimatedEntrance
 import com.flux.store.utils.AppStateManager
 import com.flux.store.utils.SlideDirection
 import com.flux.store.viewmodel.SplashViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel,
-    onBack: () -> Unit,
-    onNavigate: (String, Any?) -> Unit)
-{
+    viewModel: SplashViewModel, onBack: () -> Unit, onNavigate: (
+        route: String, payload: Any?, popUpToRoute: String?, inclusive: Boolean
+    ) -> Unit
+) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.ic_splash_img),
-            contentDescription = "Logo"
-        , modifier = Modifier.matchParentSize()
+            contentDescription = "Logo",
+            modifier = Modifier.matchParentSize()
         )
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f))){
-            Column(modifier = Modifier.fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 120.dp))
-            {
-                AnimatedEntrance(SlideDirection.Top,0){ modifier ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f))
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 120.dp)
+            ) {
+                AnimatedEntrance(SlideDirection.Top, 0) { modifier ->
                     Text(
                         text = "Welcome to GemStore!",
                         modifier = modifier.align(Alignment.CenterHorizontally),
@@ -63,13 +67,19 @@ fun SplashScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                AnimatedEntrance(SlideDirection.Left,0){ modifier ->
-                    Text(modifier = modifier.align(Alignment.CenterHorizontally),text = " The home for a fashionista",color = Color.White,style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal))
+                AnimatedEntrance(SlideDirection.Left, 0) { modifier ->
+                    Text(
+                        modifier = modifier.align(Alignment.CenterHorizontally),
+                        text = " The home for a fashionista",
+                        color = Color.White,
+                        style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
+                    )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                AnimatedEntrance(SlideDirection.Bottom,0){ modifier ->
-                    Button(modifier = modifier.align(Alignment.CenterHorizontally),
-                        onClick = { handleGetStarted(onNavigate,viewModel) }){
+                AnimatedEntrance(SlideDirection.Bottom, 0) { modifier ->
+                    Button(
+                        modifier = modifier.align(Alignment.CenterHorizontally),
+                        onClick = { handleGetStarted(onNavigate, viewModel) }) {
                         Text(text = "Get Started")
                     }
                 }
@@ -78,27 +88,27 @@ fun SplashScreen(
     }
 
     LaunchedEffect(Unit) {
-        delay(1000) // simulate loading
-        if (!viewModel.hasSeenIntro.value){
-            onNavigate(SplashRoutes.IntroScreen.toRoute(), null)
-        }else if (viewModel.hasSeenIntro.value && !viewModel.isUserLoggedIn.value){
-            onNavigate(LoginRoutes.LoginScreen.toRoute(), null)
-        }else if (viewModel.hasSeenIntro.value && viewModel.isUserLoggedIn.value){
-            onNavigate(HomeRoutes.HomeScreen.toRoute(), null)
+        delay(1000)
+        val targetRoute = when {
+            !viewModel.hasSeenIntro.value -> SplashRoutes.IntroScreen.toRoute()
+            !viewModel.isUserLoggedIn.value -> LoginRoutes.RegistrationScreen.toRoute()
+            else -> HomeRoutes.HomeScreen.toRoute()
         }
+        onNavigate(targetRoute, null, SplashRoutes.SplashScreen.toRoute(), true)
+
     }
 
 }
 
-fun handleGetStarted(onNavigate: (String, Any?) -> Unit, viewModel: SplashViewModel){
-    println("Calculating something...")
-    if (!viewModel.hasSeenIntro.value){
-        onNavigate(SplashRoutes.IntroScreen.toRoute(), null)
-    }else if (viewModel.hasSeenIntro.value && !viewModel.isUserLoggedIn.value){
-        onNavigate(LoginRoutes.LoginScreen.toRoute(), null)
-    }else if (viewModel.hasSeenIntro.value && viewModel.isUserLoggedIn.value){
-        onNavigate(HomeRoutes.HomeScreen.toRoute(), null)
+fun handleGetStarted(
+    onNavigate: (String, Any?, String?, Boolean) -> Unit, viewModel: SplashViewModel
+) {
+    val targetRoute = when {
+        !viewModel.hasSeenIntro.value -> SplashRoutes.IntroScreen.toRoute()
+        !viewModel.isUserLoggedIn.value -> LoginRoutes.RegistrationScreen.toRoute()
+        else -> HomeRoutes.HomeScreen.toRoute()
     }
+    onNavigate(targetRoute, null, SplashRoutes.SplashScreen.toRoute(), true)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
@@ -108,8 +118,6 @@ fun SplashScreenView() {
     val context = LocalContext.current
     SplashScreen(
         viewModel = SplashViewModel(AppStateManager(context)), // This may require default constructor or mock
-        onBack = {},
-        onNavigate = { _, _ -> }
-    )
+        onBack = {}, onNavigate = { route, _, _, _ -> })
 }
 

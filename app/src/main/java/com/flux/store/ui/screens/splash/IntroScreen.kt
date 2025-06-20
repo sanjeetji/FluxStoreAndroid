@@ -42,26 +42,43 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import com.flux.store.R
 import com.flux.store.model.response.IntroResponse
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.IntroViewmodel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun IntroScreen(
     viewModel: IntroViewmodel,
     onBack: () -> Unit,
-    onNavigate: (route: String, payload: Any?) -> Unit
+    onNavigate: (
+        route: String,
+        payload: Any?,
+        popUpToRoute: String?,
+        inclusive: Boolean
+    ) -> Unit
 ) {
 
     val introData = listOf(
-        IntroResponse("Discover something new","Special new arrivals just for you",R.drawable.img_first_intro),
-        IntroResponse("Update trendy outfit","Favorite brands and hottest trends",R.drawable.img_second_intro),
-        IntroResponse("Explore your true style","Relax and let us bring the style to you",R.drawable.img_third_intro),
-        )
+        IntroResponse(
+            "Discover something new",
+            "Special new arrivals just for you",
+            R.drawable.img_first_intro
+        ),
+        IntroResponse(
+            "Update trendy outfit",
+            "Favorite brands and hottest trends",
+            R.drawable.img_second_intro
+        ),
+        IntroResponse(
+            "Explore your true style",
+            "Relax and let us bring the style to you",
+            R.drawable.img_third_intro
+        ),
+    )
 
     val pagerState = rememberPagerState(pageCount = { introData.size })
     val coroutineScope = rememberCoroutineScope()
@@ -92,25 +109,43 @@ fun IntroScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background))
+                .background(MaterialTheme.colorScheme.background)
+        )
         {
             // Top Text Area
-            Column(modifier = Modifier.weight(1f).fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
             }
             // Bottom Half with Overlay
-            Column(modifier = Modifier.weight(1f).fillMaxWidth().background(MaterialTheme.colorScheme.primary), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
             }
         }
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .zIndex(1f)
-            .background(Color.Transparent)) {
-            Column(modifier = Modifier.fillMaxHeight(.8f)
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Transparent))
+                .zIndex(1f)
+                .background(Color.Transparent)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight(.8f)
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+            )
             {
                 HorizontalPager(
                     state = pagerState,
@@ -126,16 +161,46 @@ fun IntroScreen(
                             .padding(horizontal = 16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(modifier = Modifier
+                        Text(
+                            modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
                                 .padding(top = 50.dp)
-                                .semantics { contentDescription = introData[page].title }, text = introData[page].title, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.Medium), color = MaterialTheme.colorScheme.onBackground)
-                        Text(modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 16.dp).semantics { contentDescription = introData[page].description }, text = introData[page].description, textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, fontWeight = FontWeight.Medium), color = MaterialTheme.colorScheme.onBackground)
-                        AsyncImage(model = introData[page].image, contentDescription = "Intro Image ${page + 1}", modifier = Modifier.fillMaxSize().padding(20.dp))
+                                .semantics { contentDescription = introData[page].title },
+                            text = introData[page].title,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = 16.dp)
+                                .semantics { contentDescription = introData[page].description },
+                            text = introData[page].description,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        AsyncImage(
+                            model = introData[page].image,
+                            contentDescription = "Intro Image ${page + 1}",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(20.dp)
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                LazyRow(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     items(introData.size) { index ->
                         val isSelected = index == pagerState.currentPage
                         Box(
@@ -158,14 +223,20 @@ fun IntroScreen(
                     }
                 }
             }
-            Column(modifier = Modifier.fillMaxHeight(1f)
-                .fillMaxWidth()
-                .background(Color.Transparent))
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight(1f)
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+            )
             {
 
                 Button(
                     onClick = {
-                        Log.e("OnCLicked....","Current Page is ${pagerState.currentPage} Index is ${introData.size} Last index is ${introData.lastIndex}")
+                        Log.e(
+                            "OnCLicked....",
+                            "Current Page is ${pagerState.currentPage} Index is ${introData.size} Last index is ${introData.lastIndex}"
+                        )
                         if (pagerState.currentPage == introData.lastIndex) {
                             handleShoppingNow(onNavigate)
                         } else {
@@ -181,11 +252,16 @@ fun IntroScreen(
                         .padding(top = 20.dp)
                         .width(200.dp)
                         .height(50.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.outline, CircleShape) // #6B6B6B (dark) or #8A8A8A (light)
+                        .border(
+                            2.dp,
+                            MaterialTheme.colorScheme.outline,
+                            CircleShape
+                        ) // #6B6B6B (dark) or #8A8A8A (light)
                         .semantics { contentDescription = "Navigate to next page or home" },
                     shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(containerColor =
-                        MaterialTheme.colorScheme.secondary
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor =
+                            MaterialTheme.colorScheme.secondary
                     )
                 ) {
                     Text(
@@ -201,8 +277,8 @@ fun IntroScreen(
     }
 }
 
-fun handleShoppingNow(onNavigate: (route: String, payload: Any?) -> Unit) {
-    onNavigate(HomeRoutes.HomeScreen.toRoute(), null)
+fun handleShoppingNow(onNavigate: (target: String, payload: Any?, String?, Boolean) -> Unit) {
+    onNavigate(HomeRoutes.HomeScreen.toRoute(), null, null, false)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
@@ -210,7 +286,10 @@ fun handleShoppingNow(onNavigate: (route: String, payload: Any?) -> Unit) {
 @Composable
 fun IntroScreenView() {
     ComposeAppTheme {
-        IntroScreen(IntroViewmodel(), {}, { _, _ -> })
+        IntroScreen(
+            IntroViewmodel(), {},
+            onNavigate = { route, _, _, _ -> },
+        )
     }
 }
 

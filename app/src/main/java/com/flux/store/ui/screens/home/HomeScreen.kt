@@ -1,7 +1,14 @@
 package com.flux.store.ui.screens.home
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -16,7 +23,12 @@ import com.flux.store.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel,
     onBack: () -> Unit,
-    onNavigate: (route: String, payload: Any?) -> Unit,
+    onNavigate: (
+        route: String,
+        payload: Any?,
+        popUpToRoute: String?,
+        inclusive: Boolean
+    ) -> Unit,
     setBottomBarVisible: (Boolean) -> Unit
 ) {
 
@@ -53,19 +65,20 @@ fun HomeScreen(
         Button(onClick = {
             val userId = 22
             val message = "This is example of payload."
-            onNavigate(HomeRoutes.ProfileScreen.toRoute(),message) }) {
+            onNavigate(HomeRoutes.ProfileScreen.toRoute(), message, null, false)
+        }) {
             Text("Go to Profile")
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = {
             val myObject = MyData(name = "Apples", age = 5)
-            onNavigate(HomeRoutes.CategoryScreen.toRoute(),myObject)
+            onNavigate(HomeRoutes.CategoryScreen.toRoute(), myObject, null, false)
         }
         ) {
             Text("Go to Category")
         }
         Button(onClick = {
-            onNavigate(SplashRoutes.IntroScreen.toRoute(),"myObject")
+            onNavigate(SplashRoutes.IntroScreen.toRoute(), "myObject", null, false)
         }
         ) {
             Text("Go To Intro")

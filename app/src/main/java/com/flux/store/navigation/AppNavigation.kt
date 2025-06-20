@@ -21,12 +21,25 @@ fun AppNavigation(
 
     val bottomBarVisible = rememberSaveable { mutableStateOf(shouldShowBottomBar) }
 
-
-    fun navigateWithPayload(route: String, payload: Any? = null) {
+    fun navigateWithPayload(
+        route: String,
+        payload: Any? = null,
+        popUpToRoute: String? = null,
+        inclusive: Boolean = false
+    ) {
         println("Navigating to $route with payload $payload")
         navController.currentBackStackEntry?.savedStateHandle?.set("navPayload", payload)
-        navController.navigate(route)
+
+        navController.navigate(route) {
+            popUpToRoute?.let {
+                popUpTo(it) {
+                    this.inclusive = inclusive
+                }
+            }
+            launchSingleTop = true
+        }
     }
+
 
     Scaffold(
         bottomBar = { if (bottomBarVisible.value) BottomBar(navController) },
@@ -39,7 +52,7 @@ fun AppNavigation(
         ) {
             splashNavigation(::navigateWithPayload, navController)
             loginNavigation(::navigateWithPayload, navController)
-            homeNavigation(::navigateWithPayload, navController,bottomBarVisible)
+            homeNavigation(::navigateWithPayload, navController, bottomBarVisible)
         }
     }
 }

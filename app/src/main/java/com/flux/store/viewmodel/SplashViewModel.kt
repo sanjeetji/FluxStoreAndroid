@@ -22,8 +22,8 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _hasSeenIntro.value = false//appStateManager.hasSeenIntro.first()
-            _isUserLoggedIn.value = true//appStateManager.isLoggedIn.first()
+            _hasSeenIntro.value = true//appStateManager.hasSeenIntro.first()
+            _isUserLoggedIn.value = false//appStateManager.isLoggedIn.first()
         }
     }
 }

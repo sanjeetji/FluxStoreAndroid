@@ -10,7 +10,12 @@ import com.flux.store.ui.screens.loginRegistration.RegistrationScreen
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 fun NavGraphBuilder.loginNavigation(
-    navigateWithPayload: (String, Any?) -> Unit,
+    navigateWithPayload: (
+        route: String,
+        payload: Any?,
+        popUpToRoute: String?,
+        inclusive: Boolean
+    ) -> Unit,
     navController: NavHostController
 ) {
     composable(route = LoginRoutes.RegistrationScreen.toRoute()) {
