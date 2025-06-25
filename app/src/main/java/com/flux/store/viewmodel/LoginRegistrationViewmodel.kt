@@ -11,4 +11,8 @@ class LoginRegistrationViewmodel @Inject constructor():ViewModel() {
 
     }
 
+    fun loginUser(email: String,password: String) {
+
+    }
+
 }

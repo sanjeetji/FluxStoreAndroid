@@ -64,6 +64,7 @@ import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.ui.theme.Gray
 import com.flux.store.ui.theme.LightGray1
 import com.flux.store.utils.Helper
+import com.flux.store.utils.tr
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
@@ -104,7 +105,7 @@ fun RegistrationScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Create your account",
+            text = tr(R.string.create_your_account),
             style = MaterialTheme.typography.titleLarge.copy(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal
@@ -120,7 +121,7 @@ fun RegistrationScreen(
             onValueChange = { newValue -> name = newValue },
             placeholder = {
                 Text(
-                    "Enter your name",
+                    tr(R.string.hint_enter_your_name),
                     style = TextStyle(fontSize = 14.sp)
                 )
             }, // Hint text shown when TextField is empty
@@ -166,7 +167,12 @@ fun RegistrationScreen(
         TextField(
             value = phone,
             onValueChange = { newValue -> phone = newValue },
-            placeholder = { Text("Enter your phone no", style = TextStyle(fontSize = 14.sp)) },
+            placeholder = {
+                Text(
+                    tr(R.string.hint_enter_your_phone_no),
+                    style = TextStyle(fontSize = 14.sp)
+                )
+            },
             textStyle = TextStyle(fontSize = 18.sp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -207,7 +213,12 @@ fun RegistrationScreen(
         TextField(
             value = email,
             onValueChange = { newValue -> email = newValue },
-            placeholder = { Text("Enter you email address", style = TextStyle(fontSize = 14.sp)) },
+            placeholder = {
+                Text(
+                    tr(R.string.hint_enter_your_email),
+                    style = TextStyle(fontSize = 14.sp)
+                )
+            },
             textStyle = TextStyle(fontSize = 18.sp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -249,7 +260,12 @@ fun RegistrationScreen(
             value = password,
             onValueChange = { newValue -> password = newValue },
             textStyle = TextStyle(fontSize = 18.sp),
-            placeholder = { Text("Enter you password", style = TextStyle(fontSize = 14.sp)) },
+            placeholder = {
+                Text(
+                    tr(R.string.hint_enter_your_password),
+                    style = TextStyle(fontSize = 14.sp)
+                )
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
@@ -300,12 +316,12 @@ fun RegistrationScreen(
                 contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
             )
         ) {
-            Text("Sign Up")
+            Text(tr(R.string.sing_up))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "or sign up with")
+        Text(text = tr(R.string.or_sign_up_with), style = TextStyle(fontSize = 16.sp))
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -343,16 +359,22 @@ fun RegistrationScreen(
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
-                text = "Already have account?  ", style = TextStyle(
+                text = tr(R.string.already_have_an_account), style = TextStyle(
                     fontSize = 16.sp
                 )
             )
             Text(
-                text = "Log In", style = TextStyle(
+                text = tr(R.string.login), style = TextStyle(
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline,
                 ), modifier = Modifier.clickable {
-                    onNavigate(LoginRoutes.LoginScreen.toRoute(), null, "", false)
+//                    onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
+                    onNavigate(
+                        LoginRoutes.LanguagePickerScreen.toRoute(),
+                        "",
+                        LoginRoutes.RegistrationScreen.toRoute(),
+                        true
+                    )
                 }
             )
         }
@@ -386,6 +408,12 @@ fun handleSignUpBtn(
     }
     Toast.makeText(context, "User is registered successful...", Toast.LENGTH_SHORT).show()
     viewModel.registerUser(name, email, phone, password)
+    onNavigate(
+        LoginRoutes.LoginScreen.toRoute(),
+        "",
+        LoginRoutes.RegistrationScreen.toRoute(),
+        true
+    )
 }
 
 @SuppressLint("ViewModelConstructorInComposable")

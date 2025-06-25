@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.flux.store.navigation.routes.LoginRoutes
+import com.flux.store.ui.screens.loginRegistration.LanguagePickerScreen
 import com.flux.store.ui.screens.loginRegistration.LoginScreen
 import com.flux.store.ui.screens.loginRegistration.RegistrationScreen
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
@@ -29,6 +30,15 @@ fun NavGraphBuilder.loginNavigation(
     composable(route = LoginRoutes.LoginScreen.toRoute()) {
         val viewModel: LoginRegistrationViewmodel = hiltViewModel()
         LoginScreen(
+            viewModel = viewModel,
+            onNavigate = navigateWithPayload,
+            onBack = { navController.popBackStack() }
+        )
+    }
+
+    composable(route = LoginRoutes.LanguagePickerScreen.toRoute()) {
+        val viewModel: LoginRegistrationViewmodel = hiltViewModel()
+        LanguagePickerScreen(
             viewModel = viewModel,
             onNavigate = navigateWithPayload,
             onBack = { navController.popBackStack() }

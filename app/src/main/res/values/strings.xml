@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Flux Store</string>
+
+    //Registration screen string
+    <string name="create_your_account">Create your account</string>
+    <string name="hint_enter_your_name">Enter your name</string>
+    <string name="hint_enter_your_phone_no">Enter your phone no</string>
+    <string name="hint_enter_your_email">Enter you email address</string>
+    <string name="hint_enter_your_password">Enter your password</string>
+    <string name="sing_up">Sign Up</string>
+    <string name="or_sign_up_with">or sign up with</string>
+    <string name="already_have_an_account">"Already have account?  "</string>
+    <string name="login">Log In</string>
+    <string name="please_select_any_language">Please select any language</string>
+
+    //Login screen string
+    <string name="login_into_your_account">Login into your account</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="or_login_with">or login with</string>
+    <string name="do_not_have_account">"Don’t have an account? "</string>
+    <string name="forgot_password_description">Enter email associated with your account and we’ll send and email with instructions to reset your password</string>
+
 </resources>

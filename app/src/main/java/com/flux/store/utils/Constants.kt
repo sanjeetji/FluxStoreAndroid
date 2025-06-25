@@ -6,4 +6,5 @@ object Constants {
     const val CATEGORY_SCREEN: String = "CATEGORY"
     const val CART_SCREEN: String = "CART"
     const val PROFILE_SCREEN: String = "PROFILE"
+    const val PREFERENCES_NAME = "flag_preferences"
 }

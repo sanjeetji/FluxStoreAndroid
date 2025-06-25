@@ -67,6 +67,11 @@ sealed interface LoginRoutes : Routes {
     data object LoginScreen : LoginRoutes {
         override fun toRoute() = "login"
     }
+
+    @Serializable
+    data object LanguagePickerScreen : LoginRoutes {
+        override fun toRoute() = "languagePickerScreen"
+    }
 }
 
 
