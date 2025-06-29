@@ -1,4 +1,4 @@
-package com.flux.store.utils
+package com.flux.store.helper
 
 object Constants {
 

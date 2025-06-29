@@ -1,4 +1,4 @@
-package com.flux.store.ui.screens.loginRegistration
+package com.flux.store.ui.screens.localizaiton
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -34,12 +34,11 @@ import androidx.compose.ui.unit.sp
 import com.flux.store.R
 import com.flux.store.ui.theme.Black
 import com.flux.store.ui.theme.White
-import com.flux.store.utils.AppStateManager
-import com.flux.store.utils.LocalLocalizationManager
-import com.flux.store.utils.LocalStrings
-import com.flux.store.utils.LocalizationManager
-import com.flux.store.utils.t
-import com.flux.store.utils.tr
+import com.flux.store.helper.AppStateManager
+import com.flux.store.helper.localizationHelper.LocalLocalizationManager
+import com.flux.store.helper.localizationHelper.LocalStrings
+import com.flux.store.helper.localizationHelper.LocalizationManager
+import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

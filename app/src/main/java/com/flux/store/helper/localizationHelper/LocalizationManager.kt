@@ -1,6 +1,7 @@
-package com.flux.store.utils
+package com.flux.store.helper.localizationHelper
 
 import android.util.Log
+import com.flux.store.helper.AppStateManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
@@ -19,9 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalizationManager @Inject constructor(
-  internal val state: AppStateManager
-) {
+class LocalizationManager @Inject constructor(internal val state: AppStateManager) {
   private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
   private val gson = Gson()
   private val mapType = object : TypeToken<Map<String, String>>() {}.type

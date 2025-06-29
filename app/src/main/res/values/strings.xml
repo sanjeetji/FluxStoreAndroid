@@ -15,9 +15,17 @@
 
     //Login screen string
     <string name="login_into_your_account">Login into your account</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password">Forgot Password</string>
     <string name="or_login_with">or login with</string>
     <string name="do_not_have_account">"Don’t have an account? "</string>
     <string name="forgot_password_description">Enter email associated with your account and we’ll send and email with instructions to reset your password</string>
-
+    <string name="verification_code">Verification code</string>
+    <string name="verification_code_description">Please enter the verification code we sent to your email address</string>
+    <string name="resend_in">Resend in</string>
+    <string name="invalid_otp">Please enter valued OTP.</string>
+    <string name="confirm">Confirm</string>
+    <string name="create_new_password">Create new password</string>
+    <string name="create_new_password_description">Your new password must be different from previously used password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

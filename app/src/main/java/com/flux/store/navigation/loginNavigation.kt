@@ -5,9 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.flux.store.navigation.routes.LoginRoutes
-import com.flux.store.ui.screens.loginRegistration.LanguagePickerScreen
-import com.flux.store.ui.screens.loginRegistration.LoginScreen
-import com.flux.store.ui.screens.loginRegistration.RegistrationScreen
+import com.flux.store.ui.screens.onboard.forgotPassword.CreateNewPasswordScreen
+import com.flux.store.ui.screens.onboard.forgotPassword.ForgotPasswordScreen
+import com.flux.store.ui.screens.onboard.forgotPassword.VerificationCodeScreen
+import com.flux.store.ui.screens.localizaiton.LanguagePickerScreen
+import com.flux.store.ui.screens.onboard.LoginScreen
+import com.flux.store.ui.screens.onboard.RegistrationScreen
+import com.flux.store.viewmodel.ForgotPasswordViewmodel
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 fun NavGraphBuilder.loginNavigation(
@@ -44,4 +48,33 @@ fun NavGraphBuilder.loginNavigation(
             onBack = { navController.popBackStack() }
         )
     }
+
+
+    composable(route = LoginRoutes.ForgotPasswordScreen.toRoute()) {
+        val viewModel: ForgotPasswordViewmodel = hiltViewModel()
+        ForgotPasswordScreen(
+            viewModel = viewModel,
+            onNavigate = navigateWithPayload,
+            onBack = { navController.popBackStack() }
+        )
+    }
+
+    composable(route = LoginRoutes.VerificationCodeScreen.toRoute()) {
+        val viewModel: ForgotPasswordViewmodel = hiltViewModel()
+        VerificationCodeScreen(
+            viewModel = viewModel,
+            onNavigate = navigateWithPayload,
+            onBack = { navController.popBackStack() }
+        )
+    }
+
+    composable(route = LoginRoutes.CreateNewPasswordScreen.toRoute()) {
+        val viewModel: ForgotPasswordViewmodel = hiltViewModel()
+        CreateNewPasswordScreen(
+            viewModel = viewModel,
+            onNavigate = navigateWithPayload,
+            onBack = { navController.popBackStack() }
+        )
+    }
+
 }

@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import com.flux.store.utils.AppStateManager
+import com.flux.store.helper.AppStateManager
 import javax.inject.Singleton
 
 @Module

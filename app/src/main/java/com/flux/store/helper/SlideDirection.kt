@@ -1,4 +1,4 @@
-package com.flux.store.utils
+package com.flux.store.helper
 
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat

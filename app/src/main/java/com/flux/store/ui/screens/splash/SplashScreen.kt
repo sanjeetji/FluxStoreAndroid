@@ -28,9 +28,9 @@ import com.flux.store.R
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.navigation.routes.SplashRoutes
-import com.flux.store.utils.AnimatedEntrance
-import com.flux.store.utils.AppStateManager
-import com.flux.store.utils.SlideDirection
+import com.flux.store.helper.AnimatedEntrance
+import com.flux.store.helper.AppStateManager
+import com.flux.store.helper.SlideDirection
 import com.flux.store.viewmodel.SplashViewModel
 import kotlinx.coroutines.delay
 

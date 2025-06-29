@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.flux.store.utils.AppStateManager
+import com.flux.store.helper.AppStateManager
 import javax.inject.Inject
 
 @HiltViewModel

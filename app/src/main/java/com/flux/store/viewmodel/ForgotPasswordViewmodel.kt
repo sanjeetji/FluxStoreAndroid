@@ -8,4 +8,9 @@ import javax.inject.Inject
 class ForgotPasswordViewmodel @Inject constructor():ViewModel() {
 
 
+    fun verifyOtp(otp:String):Boolean{
+        return otp=="123456" || otp=="1234"
+    }
+
+
 }

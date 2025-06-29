@@ -1,4 +1,4 @@
-package com.flux.store.ui.screens.loginRegistration
+package com.flux.store.ui.screens.onboard
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -18,14 +18,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -42,8 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -54,21 +51,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flux.store.R
+import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.ui.theme.Gray
 import com.flux.store.ui.theme.LightGray1
-import com.flux.store.utils.Helper
-import com.flux.store.utils.tr
+import com.flux.store.helper.Helper
+import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
-fun RegistrationScreen(
+fun LoginScreen(
     viewModel: LoginRegistrationViewmodel,
     onNavigate: (
         route: String,
@@ -79,20 +78,15 @@ fun RegistrationScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    val isFocused = remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
 
     BackHandler {
         onBack()
-        //Toast.makeText(context,"You are trying to back...",Toast.LENGTH_SHORT).show()
     }
 
 
@@ -104,8 +98,10 @@ fun RegistrationScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Spacer(modifier = Modifier.height(72.dp))
         Text(
-            text = tr(R.string.create_your_account),
+            text = tr(R.string.login_into_your_account),
             style = MaterialTheme.typography.titleLarge.copy(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal
@@ -115,100 +111,6 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(52.dp))
-
-        TextField(
-            value = name,
-            onValueChange = { newValue -> name = newValue },
-            placeholder = {
-                Text(
-                    tr(R.string.hint_enter_your_name),
-                    style = TextStyle(fontSize = 14.sp)
-                )
-            }, // Hint text shown when TextField is empty
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
-                .semantics { contentDescription = "Name input field" }
-                .focusRequester(focusRequester), // Attach FocusRequester
-            singleLine = true,
-            textStyle = TextStyle(fontSize = 18.sp),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Person,  // Replace with your custom icon or drawable
-                    contentDescription = "Person Icon",
-                    tint = if (isFocused.value) Color.White else Color.Black
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
-            ),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Text
-            ), // Set IME action to Next
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }
-            )
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        TextField(
-            value = phone,
-            onValueChange = { newValue -> phone = newValue },
-            placeholder = {
-                Text(
-                    tr(R.string.hint_enter_your_phone_no),
-                    style = TextStyle(fontSize = 14.sp)
-                )
-            },
-            textStyle = TextStyle(fontSize = 18.sp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
-                .semantics { contentDescription = "Name input field" },
-            singleLine = true,
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Phone,  // Replace with your custom icon or drawable
-                    contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
-            ),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Phone
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }
-            )
-        )
-        Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
             value = email,
@@ -301,11 +203,23 @@ fun RegistrationScreen(
             )
         )
 
-        Spacer(modifier = Modifier.height(75.dp))
+        Spacer(modifier = Modifier.height(28.dp))
+
+        Text(
+            modifier = Modifier
+                .clickable{
+                    onNavigate(LoginRoutes.ForgotPasswordScreen.toRoute(), "", null, false)
+                }
+                .fillMaxWidth(),
+            text = tr(R.string.forgot_password),
+            style = TextStyle(textAlign = TextAlign.End)
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = {
-                handleSignUpBtn(context, onNavigate, viewModel, name, email, phone, password)
+                handleLoginBtn(context, onNavigate, viewModel, email, password)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -314,17 +228,14 @@ fun RegistrationScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary, // #464447
                 contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
-            )
+            ),
+            shape = RoundedCornerShape(12.dp)
         ) {
-            Text(tr(R.string.sing_up))
+            Text(tr(R.string.login))
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = tr(R.string.or_sign_up_with), style = TextStyle(fontSize = 16.sp))
-
-        Spacer(modifier = Modifier.height(32.dp))
-
+        Spacer(modifier = Modifier.height(22.dp))
+        Text(text = tr(R.string.or_login_with), style = TextStyle(fontSize = 16.sp))
+        Spacer(modifier = Modifier.height(22.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
@@ -355,7 +266,7 @@ fun RegistrationScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(52.dp))
+        Spacer(modifier = Modifier.height(108.dp))
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
@@ -364,15 +275,14 @@ fun RegistrationScreen(
                 )
             )
             Text(
-                text = tr(R.string.login), style = TextStyle(
+                text = tr(R.string.sing_up), style = TextStyle(
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline,
                 ), modifier = Modifier.clickable {
-//                    onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
                     onNavigate(
-                        LoginRoutes.LanguagePickerScreen.toRoute(),
-                        "",
                         LoginRoutes.RegistrationScreen.toRoute(),
+                        "",
+                        LoginRoutes.LoginScreen.toRoute(),
                         true
                     )
                 }
@@ -381,47 +291,32 @@ fun RegistrationScreen(
     }
 }
 
-fun handleSignUpBtn(
+fun handleLoginBtn(
     context: Context,
     onNavigate: (String, Any?, String?, Boolean) -> Unit,
     viewModel: LoginRegistrationViewmodel,
-    name: String,
     email: String,
-    phone: String,
     password: String
 ) {
-    if (name.isEmpty()) {
-        Toast.makeText(context, "Please enter name", Toast.LENGTH_SHORT).show()
-        return
-    }
     if (email.isEmpty() || !Helper.isValidEmail(email)) {
         Toast.makeText(context, "Please enter valid email", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (phone.isEmpty() || !Helper.isValidPhone(phone)) {
-        Toast.makeText(context, "Please enter valid phone no", Toast.LENGTH_SHORT).show()
         return
     }
     if (password.isEmpty()) {
         Toast.makeText(context, "Please enter name", Toast.LENGTH_SHORT).show()
         return
     }
-    Toast.makeText(context, "User is registered successful...", Toast.LENGTH_SHORT).show()
-    viewModel.registerUser(name, email, phone, password)
-    onNavigate(
-        LoginRoutes.LoginScreen.toRoute(),
-        "",
-        LoginRoutes.RegistrationScreen.toRoute(),
-        true
-    )
+    Toast.makeText(context, "User is logged in successful...", Toast.LENGTH_SHORT).show()
+    viewModel.loginUser(email, password)
+    onNavigate(HomeRoutes.HomeScreen.toRoute(), "", LoginRoutes.LoginScreen.toRoute(), true)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
-fun RegistrationScreenPreview() {
+fun LoginScreenPreview() {
     ComposeAppTheme {
-        RegistrationScreen(
+        LoginScreen(
             viewModel = LoginRegistrationViewmodel(),
             onNavigate = { route, _, _, _ -> },
             onBack = {}
