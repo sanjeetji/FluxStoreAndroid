@@ -5,16 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.navigation.AppNavigation
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.helper.localizationHelper.LocalLocalizationManager
@@ -38,15 +38,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeAppTheme {
                 val strings by locMgr.strings.collectAsState()
+                val bottomBarVisible = rememberSaveable { mutableStateOf(false) }
                 CompositionLocalProvider(
                     LocalStrings provides strings,
-                    LocalLocalizationManager provides locMgr
+                    LocalLocalizationManager provides locMgr,
+                    LocalBottomBarVisible provides bottomBarVisible
                 ) {
                     val navController = rememberNavController()
-                    val shouldUseBottomNav = false // Set to false to use no bottom navigation
                     AppNavigation(
                         navController = navController,
-                        shouldShowBottomBar = shouldUseBottomNav
                     )
                 }
             }

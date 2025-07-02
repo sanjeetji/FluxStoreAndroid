@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -99,11 +100,13 @@ fun VerificationCodeScreen(
             .background(Color.White)
             .padding(start = 22.dp, end = 32.dp)
     ) {
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Image(
             painter = painterResource(R.drawable.ic_back),
             contentDescription = "back button",
-            modifier = Modifier.size(24.dp).clickable{
+            modifier = Modifier
+                .shadow(1.dp, shape = RoundedCornerShape(50.dp),clip = true)
+                .clickable{
                 onBack()
             }
         )
@@ -112,12 +115,12 @@ fun VerificationCodeScreen(
             text = tr(R.string.verification_code),
             style = TextStyle(fontSize = 24.sp)
         )
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = tr(R.string.verification_code_description),
             style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default)
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(172.dp))
 
         // OTP Input Field
         OTPInputField(
@@ -129,7 +132,7 @@ fun VerificationCodeScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(216.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = {
                 if (otp.length == otpLength) {
@@ -167,13 +170,13 @@ fun OTPInputField(
 
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         repeat(otpLength) { index ->
             val char = if (index < otp.length) otp[index].toString() else ""
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(42.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(
                         if (isError) Color(0xFFFFE6E6) // Light red for error
@@ -202,7 +205,8 @@ fun OTPInputField(
                         }
                     },
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(42.dp)
+                        .padding(top = 8.dp)
                         .focusRequester(focusRequesters[index])
                         .semantics { contentDescription = "OTP digit ${index + 1}" },
                     textStyle = TextStyle(

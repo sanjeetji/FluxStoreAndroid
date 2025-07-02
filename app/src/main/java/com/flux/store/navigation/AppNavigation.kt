@@ -3,29 +3,27 @@ package com.flux.store.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.flux.store.navigation.bottomNav.BottomBar
 import com.flux.store.navigation.routes.SplashRoutes
+import com.flux.store.helper.LocalBottomBarVisible
 
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController,
-    shouldShowBottomBar: Boolean
+    navController: NavHostController
 ) {
     val startRoute = SplashRoutes.SplashScreen.toRoute()
+    val bottomBarVisible = LocalBottomBarVisible.current
 
-    val bottomBarVisible = rememberSaveable { mutableStateOf(shouldShowBottomBar) }
 
     fun navigateWithPayload(
         route: String,
         payload: Any? = null,
         popUpToRoute: String? = null,
-        inclusive: Boolean = false
+        inclusive: Boolean = false,
     ) {
         println("Navigating to $route with payload $payload")
         navController.currentBackStackEntry?.savedStateHandle?.set("navPayload", payload)
@@ -52,7 +50,7 @@ fun AppNavigation(
         ) {
             splashNavigation(::navigateWithPayload, navController)
             loginNavigation(::navigateWithPayload, navController)
-            homeNavigation(::navigateWithPayload, navController, bottomBarVisible)
+            homeNavigation(::navigateWithPayload, navController)
         }
     }
 }

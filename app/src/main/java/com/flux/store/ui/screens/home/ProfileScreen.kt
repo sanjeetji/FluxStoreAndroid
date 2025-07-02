@@ -26,6 +26,7 @@ fun ProfileScreen(
         inclusive: Boolean
     ) -> Unit
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -279,12 +279,7 @@ fun LoginScreen(
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline,
                 ), modifier = Modifier.clickable {
-                    onNavigate(
-                        LoginRoutes.RegistrationScreen.toRoute(),
-                        "",
-                        LoginRoutes.LoginScreen.toRoute(),
-                        true
-                    )
+                    onNavigate(LoginRoutes.RegistrationScreen.toRoute(), "", LoginRoutes.LoginScreen.toRoute(), true)
                 }
             )
         }

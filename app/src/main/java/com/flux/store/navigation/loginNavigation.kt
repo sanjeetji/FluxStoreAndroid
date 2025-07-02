@@ -73,7 +73,7 @@ fun NavGraphBuilder.loginNavigation(
         CreateNewPasswordScreen(
             viewModel = viewModel,
             onNavigate = navigateWithPayload,
-            onBack = { navController.popBackStack() }
+            navController =  navController
         )
     }
 

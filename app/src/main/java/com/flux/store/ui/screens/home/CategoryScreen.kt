@@ -1,5 +1,6 @@
 package com.flux.store.ui.screens.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,11 @@ fun CategoryScreen(
         inclusive: Boolean
     ) -> Unit
 ) {
+
+    BackHandler {
+        onBack()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

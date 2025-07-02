@@ -93,7 +93,6 @@ fun RegistrationScreen(
 
     BackHandler {
         onBack()
-        //Toast.makeText(context,"You are trying to back...",Toast.LENGTH_SHORT).show()
     }
 
 
@@ -369,13 +368,8 @@ fun RegistrationScreen(
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline,
                 ), modifier = Modifier.clickable {
-//                    onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
-                    onNavigate(
-                        LoginRoutes.LanguagePickerScreen.toRoute(),
-                        "",
-                        LoginRoutes.RegistrationScreen.toRoute(),
-                        true
-                    )
+                    onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
+//                    onNavigate(LoginRoutes.LanguagePickerScreen.toRoute(), "", LoginRoutes.RegistrationScreen.toRoute(), true)
                 }
             )
         }

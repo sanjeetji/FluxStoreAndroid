@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -65,34 +66,46 @@ fun ForgotPasswordScreen(
     ) -> Unit,
     onBack: () -> Unit
 ) {
-
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
+    var isButtonEnabled by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
-        .statusBarsPadding()
-        .padding(start = 4.dp, end = 32.dp)) {
-        Spacer(modifier = Modifier.height(18.dp))
-        Image(painterResource(R.drawable.ic_back), contentDescription = "back button",
-            modifier = Modifier.clickable{onBack()})
-        Column(modifier = Modifier
+    Column(
+        modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(start = 22.dp)) {
+            .padding(start = 22.dp, end = 32.dp)
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Image(
+            painter = painterResource(R.drawable.ic_back),
+            contentDescription = "back button",
+            modifier = Modifier
+                .shadow(1.dp, shape = RoundedCornerShape(50.dp), clip = true)
+                .clickable {
+                    onBack()
+                }
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(tr(R.string.forgot_password), style = TextStyle(fontSize = 24.sp))
-            Spacer(modifier = Modifier.height(18.dp))
-            Text(tr(R.string.forgot_password_description),
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                tr(R.string.forgot_password_description),
                 style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default)
             )
             Spacer(modifier = Modifier.height(120.dp))
             TextField(
                 value = email,
-                onValueChange = { newValue -> email = newValue },
+                onValueChange = { newValue ->
+                    email = newValue
+                    isButtonEnabled = Helper.isValidEmail(newValue)
+                },
                 placeholder = {
                     Text(
                         tr(R.string.hint_enter_your_email),
@@ -107,21 +120,21 @@ fun ForgotPasswordScreen(
                 singleLine = true,
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Filled.Email,  // Replace with your custom icon or drawable
+                        imageVector = Icons.Filled.Email,
                         contentDescription = "Person Icon",
                         tint = MaterialTheme.colorScheme.primary
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Gray,  // Replace with your focused color
-                    unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
+                    focusedContainerColor = Color.Gray,
+                    unfocusedContainerColor = LightGray1,
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.Black,
                     focusedPlaceholderColor = Color.Gray,
                     unfocusedPlaceholderColor = Color.Gray,
-                    focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                    unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                    focusedLabelColor = Color.White,  // Customize label color when focused
+                    focusedIndicatorColor = Color.Gray,
+                    unfocusedLabelColor = Gray,
+                    focusedLabelColor = Color.White,
                     unfocusedIndicatorColor = LightGray1
                 ),
                 keyboardOptions = KeyboardOptions(
@@ -134,7 +147,7 @@ fun ForgotPasswordScreen(
                     }
                 )
             )
-            Spacer(modifier = Modifier.height(108.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = {
@@ -145,9 +158,10 @@ fun ForgotPasswordScreen(
                     .height(50.dp)
                     .semantics { contentDescription = "Submit registration button" },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary, // #464447
-                    contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
-                )
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                enabled = isButtonEnabled
             ) {
                 Text(tr(R.string.login))
             }
@@ -159,18 +173,15 @@ fun handleConfirmBtn(
     context: Context,
     onNavigate: (String, Any?, String?, Boolean) -> Unit,
     viewModel: ForgotPasswordViewmodel,
-    email: String)
-{
+    email: String
+) {
     if (email.isEmpty() || !Helper.isValidEmail(email)) {
         Toast.makeText(context, "Please enter valid email", Toast.LENGTH_SHORT).show()
         return
     }
-    Toast.makeText(context,"Password reset link sent to your email..$email.", Toast.LENGTH_SHORT).show()
-    onNavigate(LoginRoutes.VerificationCodeScreen.toRoute(), "",null, false)
-
+    Toast.makeText(context, "Password reset link sent to your email: $email.", Toast.LENGTH_SHORT).show()
+    onNavigate(LoginRoutes.VerificationCodeScreen.toRoute(), "", null, false)
 }
-
-
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)

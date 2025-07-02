@@ -17,8 +17,8 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     private val _showBottomBar = MutableStateFlow(false)
     val showBottomBar: StateFlow<Boolean> = _showBottomBar
 
-    fun setShowBottomBar(value: Boolean) {
-        _showBottomBar.value = value
+    fun setShowBottomBar(visible: Boolean) {
+        _showBottomBar.value = visible
     }
 
 

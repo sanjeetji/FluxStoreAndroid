@@ -19,16 +19,14 @@ fun NavGraphBuilder.homeNavigation(
         popUpToRoute: String?,
         inclusive: Boolean
     ) -> Unit,
-    navController: NavHostController,
-    bottomBarVisible: MutableState<Boolean>
+    navController: NavHostController
 ) {
     composable(route = HomeRoutes.HomeScreen.toRoute()) {
         val viewModel: HomeViewModel = hiltViewModel()
         HomeScreen(
             viewModel = viewModel,
             onBack = { navController.popBackStack() },
-            onNavigate = navigateWithPayload,
-            setBottomBarVisible = { visible -> bottomBarVisible.value = visible }
+            onNavigate = navigateWithPayload
         )
     }
     composable(route = HomeRoutes.CategoryScreen.toRoute()) {

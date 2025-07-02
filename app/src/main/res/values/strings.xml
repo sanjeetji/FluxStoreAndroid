@@ -28,4 +28,7 @@
     <string name="create_new_password_description">Your new password must be different from previously used password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="your_password_has_changed">Your password has been changed</string>
+    <string name="discover_now">Welcome back! Discover now!</string>
+    <string name="browse_home">Browse home</string>
 </resources>

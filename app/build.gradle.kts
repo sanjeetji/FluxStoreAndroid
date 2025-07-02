@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.17"
+        kotlinCompilerExtensionVersion = "1.6.0"
     }
     kapt {
         correctErrorTypes = true
@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.foundation) // Includes foundation-pager
-    implementation(libs.androidx.compose.material3)
     implementation(libs.material)
 
 
@@ -83,7 +82,10 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.gson)
     implementation(libs.accompanist.systemuicontroller)
-
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.material3.window.size.class1)
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
 
 
     // Debugging and testing
