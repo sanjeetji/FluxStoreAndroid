@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,29 +42,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
+import com.flux.store.helper.Helper
+import com.flux.store.helper.clearAndNavigateTo
+import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
+import com.flux.store.ui.theme.BlackColor
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.Gray
-import com.flux.store.ui.theme.LightGray1
-import com.flux.store.helper.Helper
-import com.flux.store.helper.localizationHelper.tr
+import com.flux.store.ui.theme.LightGrayColor
+import com.flux.store.ui.theme.LightWhiteColor
+import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
@@ -75,7 +77,7 @@ fun LoginScreen(
         popUpToRoute: String?,
         inclusive: Boolean
     ) -> Unit,
-    onBack: () -> Unit
+    navController: NavHostController
 ) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -86,7 +88,7 @@ fun LoginScreen(
 
 
     BackHandler {
-        onBack()
+        navController.popBackStack()
     }
 
 
@@ -102,11 +104,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(72.dp))
         Text(
             text = tr(R.string.login_into_your_account),
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal
-            ),
-            color = MaterialTheme.colorScheme.onBackground, // #000000 (light) or #E6E6E6 (dark)
+            style = MaterialTheme.typography.headlineMedium,
+            color = Black,
             modifier = Modifier.padding(top = 32.dp)
         )
 
@@ -118,33 +117,33 @@ fun LoginScreen(
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_email),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             },
-            textStyle = TextStyle(fontSize = 18.sp),
+            textStyle = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Email,  // Replace with your custom icon or drawable
                     contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
@@ -161,36 +160,36 @@ fun LoginScreen(
         TextField(
             value = password,
             onValueChange = { newValue -> password = newValue },
-            textStyle = TextStyle(fontSize = 18.sp),
+            textStyle = MaterialTheme.typography.bodyMedium,
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_password),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Lock,  // Replace with your custom icon or drawable
                     contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
@@ -207,34 +206,44 @@ fun LoginScreen(
 
         Text(
             modifier = Modifier
-                .clickable{
+                .align(Alignment.End)
+                .clickable {
                     onNavigate(LoginRoutes.ForgotPasswordScreen.toRoute(), "", null, false)
                 }
-                .fillMaxWidth(),
+                .wrapContentSize(),
             text = tr(R.string.forgot_password),
-            style = TextStyle(textAlign = TextAlign.End)
+            style = MaterialTheme.typography.bodySmall,
+            color = Black
         )
 
         Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = {
-                handleLoginBtn(context, onNavigate, viewModel, email, password)
+                handleLoginBtn(navController, context, onNavigate, viewModel, email, password)
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
                 .semantics { contentDescription = "Submit registration button" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary, // #464447
-                contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
+                containerColor = ThemeColor,
+                contentColor = White
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text(tr(R.string.login))
+            Text(
+                tr(R.string.login),
+                style = MaterialTheme.typography.titleMedium,
+                color = White,
+            )
         }
         Spacer(modifier = Modifier.height(22.dp))
-        Text(text = tr(R.string.or_login_with), style = TextStyle(fontSize = 16.sp))
+        Text(
+            text = tr(R.string.or_login_with),
+            style = MaterialTheme.typography.bodySmall,
+            color = Black
+        )
         Spacer(modifier = Modifier.height(22.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -270,16 +279,20 @@ fun LoginScreen(
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
-                text = tr(R.string.already_have_an_account), style = TextStyle(
-                    fontSize = 16.sp
-                )
+                text = tr(R.string.do_not_have_account),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black
             )
             Text(
-                text = tr(R.string.sing_up), style = TextStyle(
-                    fontSize = 16.sp,
-                    textDecoration = TextDecoration.Underline,
-                ), modifier = Modifier.clickable {
-                    onNavigate(LoginRoutes.RegistrationScreen.toRoute(), "", LoginRoutes.LoginScreen.toRoute(), true)
+                text = tr(R.string.sing_up),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black, modifier = Modifier.clickable {
+                    onNavigate(
+                        LoginRoutes.RegistrationScreen.toRoute(),
+                        "",
+                        LoginRoutes.LoginScreen.toRoute(),
+                        true
+                    )
                 }
             )
         }
@@ -287,6 +300,7 @@ fun LoginScreen(
 }
 
 fun handleLoginBtn(
+    navController: NavHostController,
     context: Context,
     onNavigate: (String, Any?, String?, Boolean) -> Unit,
     viewModel: LoginRegistrationViewmodel,
@@ -303,7 +317,7 @@ fun handleLoginBtn(
     }
     Toast.makeText(context, "User is logged in successful...", Toast.LENGTH_SHORT).show()
     viewModel.loginUser(email, password)
-    onNavigate(HomeRoutes.HomeScreen.toRoute(), "", LoginRoutes.LoginScreen.toRoute(), true)
+    navController.clearAndNavigateTo(HomeRoutes.HomeScreen)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
@@ -314,7 +328,7 @@ fun LoginScreenPreview() {
         LoginScreen(
             viewModel = LoginRegistrationViewmodel(),
             onNavigate = { route, _, _, _ -> },
-            onBack = {}
+            navController = rememberNavController()
         )
     }
 }

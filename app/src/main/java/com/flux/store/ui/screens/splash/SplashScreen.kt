@@ -11,19 +11,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.flux.store.R
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
@@ -31,6 +30,7 @@ import com.flux.store.navigation.routes.SplashRoutes
 import com.flux.store.helper.AnimatedEntrance
 import com.flux.store.helper.AppStateManager
 import com.flux.store.helper.SlideDirection
+import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.viewmodel.SplashViewModel
 import kotlinx.coroutines.delay
 
@@ -60,19 +60,19 @@ fun SplashScreen(
             ) {
                 AnimatedEntrance(SlideDirection.Top, 0) { modifier ->
                     Text(
-                        text = "Welcome to GemStore!",
+                        text = tr(R.string.welcome_to_gem_store),
                         modifier = modifier.align(Alignment.CenterHorizontally),
-                        style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold),
-                        color = Color.White
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = White
                     )
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 AnimatedEntrance(SlideDirection.Left, 0) { modifier ->
                     Text(
                         modifier = modifier.align(Alignment.CenterHorizontally),
-                        text = " The home for a fashionista",
-                        color = Color.White,
-                        style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
+                        text = tr(R.string.the_home_for),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -80,7 +80,11 @@ fun SplashScreen(
                     Button(
                         modifier = modifier.align(Alignment.CenterHorizontally),
                         onClick = { handleGetStarted(onNavigate, viewModel) }) {
-                        Text(text = "Get Started")
+                        Text(
+                            text = tr(R.string.get_started),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = White
+                            )
                     }
                 }
             }

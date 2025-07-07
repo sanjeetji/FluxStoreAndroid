@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,13 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,9 +51,11 @@ import com.flux.store.R
 import com.flux.store.helper.Helper
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.LoginRoutes
+import com.flux.store.ui.theme.BlackColor
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.Gray
-import com.flux.store.ui.theme.LightGray1
+import com.flux.store.ui.theme.LightGrayColor
+import com.flux.store.ui.theme.LightWhiteColor
+import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.ForgotPasswordViewmodel
 
 @Composable
@@ -68,7 +71,6 @@ fun ForgotPasswordScreen(
 ) {
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
-    var isButtonEnabled by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Column(
@@ -93,49 +95,52 @@ fun ForgotPasswordScreen(
                 .background(Color.White)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Text(tr(R.string.forgot_password), style = TextStyle(fontSize = 24.sp))
+            Text(tr(R.string.forgot_password),
+                style = MaterialTheme.typography.headlineMedium,
+                color = Black,
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 tr(R.string.forgot_password_description),
-                style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default)
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black,
             )
             Spacer(modifier = Modifier.height(120.dp))
             TextField(
                 value = email,
                 onValueChange = { newValue ->
                     email = newValue
-                    isButtonEnabled = Helper.isValidEmail(newValue)
                 },
                 placeholder = {
                     Text(
                         tr(R.string.hint_enter_your_email),
-                        style = TextStyle(fontSize = 14.sp)
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 },
                 textStyle = TextStyle(fontSize = 18.sp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                     .semantics { contentDescription = "Name input field" },
                 singleLine = true,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Email,
                         contentDescription = "Person Icon",
-                        tint = MaterialTheme.colorScheme.primary
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Gray,
-                    unfocusedContainerColor = LightGray1,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.Black,
-                    focusedPlaceholderColor = Color.Gray,
-                    unfocusedPlaceholderColor = Color.Gray,
-                    focusedIndicatorColor = Color.Gray,
-                    unfocusedLabelColor = Gray,
-                    focusedLabelColor = Color.White,
-                    unfocusedIndicatorColor = LightGray1
+                    focusedContainerColor = LightGrayColor,
+                    unfocusedContainerColor = LightWhiteColor,
+                    focusedTextColor = White,
+                    unfocusedTextColor = BlackColor,
+                    focusedPlaceholderColor = ThemeColor,
+                    unfocusedPlaceholderColor = LightGrayColor,
+                    focusedIndicatorColor = LightGrayColor,
+                    unfocusedIndicatorColor = White,
+                    unfocusedLeadingIconColor = BlackColor,
+                    focusedLeadingIconColor = White
                 ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
@@ -158,12 +163,16 @@ fun ForgotPasswordScreen(
                     .height(50.dp)
                     .semantics { contentDescription = "Submit registration button" },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = ThemeColor,
+                    contentColor = White
                 ),
-                enabled = isButtonEnabled
+                shape = RoundedCornerShape(12.dp),
             ) {
-                Text(tr(R.string.login))
+                Text(
+                    tr(R.string.login),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = White,
+                )
             }
         }
     }

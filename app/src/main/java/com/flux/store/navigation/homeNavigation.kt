@@ -25,8 +25,8 @@ fun NavGraphBuilder.homeNavigation(
         val viewModel: HomeViewModel = hiltViewModel()
         HomeScreen(
             viewModel = viewModel,
-            onBack = { navController.popBackStack() },
-            onNavigate = navigateWithPayload
+            onNavigate = navigateWithPayload,
+            navController= navController
         )
     }
     composable(route = HomeRoutes.CategoryScreen.toRoute()) {

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.helper.LocalBottomBarVisible
+import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.navigation.AppNavigation
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.helper.localizationHelper.LocalLocalizationManager
@@ -35,19 +36,26 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(Color.Transparent.toArgb(), Color.Transparent.toArgb()),
         )
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+
+
         setContent {
             ComposeAppTheme {
                 val strings by locMgr.strings.collectAsState()
                 val bottomBarVisible = rememberSaveable { mutableStateOf(false) }
+                val isDarkTheme      = rememberSaveable { mutableStateOf(false) }
                 CompositionLocalProvider(
                     LocalStrings provides strings,
                     LocalLocalizationManager provides locMgr,
-                    LocalBottomBarVisible provides bottomBarVisible
+                    LocalBottomBarVisible provides bottomBarVisible,
+                    LocalIsDarkTheme        provides isDarkTheme
                 ) {
-                    val navController = rememberNavController()
-                    AppNavigation(
-                        navController = navController,
-                    )
+                    ComposeAppTheme(darkTheme = isDarkTheme.value) {
+                        val navController = rememberNavController()
+                        AppNavigation(
+                            navController = navController,
+                        )
+                    }
                 }
             }
         }

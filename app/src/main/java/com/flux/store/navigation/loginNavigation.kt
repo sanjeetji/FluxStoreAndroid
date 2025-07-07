@@ -36,7 +36,7 @@ fun NavGraphBuilder.loginNavigation(
         LoginScreen(
             viewModel = viewModel,
             onNavigate = navigateWithPayload,
-            onBack = { navController.popBackStack() }
+            navController = navController
         )
     }
 

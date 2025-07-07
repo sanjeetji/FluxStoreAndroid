@@ -1,128 +1,92 @@
 package com.flux.store.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.Placeholder
 
-// Light theme colors
-val LightPrimary = Color(0xFF343434) // #343434 as primary
-val LightOnPrimary = Color(0xFFFFFFFF) // White for contrast on primary
-val LightSecondary = Color(0xFF464447) // #464447 as secondary
-val LightOnSecondary = Color(0xFFFFFFFF) // White for contrast on secondary
-val LightTertiary = Color(0xFF508A7B) // #508A7B (light green) as tertiary
-val LightOnTertiary = Color(0xFFFFFFFF) // White for contrast on tertiary
-val LightBackground = Color(0xFFF8F8F8) // Light gray background
-val LightOnBackground = Color(0xFF000000) // #000000 (black) for text/icons
-val LightSurface = Color(0xFFFFFFFF) // White for cards/surfaces
-val LightOnSurface = Color(0xFF000000) // #000000 (black) for surface text/icons
-val LightError = Color(0xFFEE6969) // #EE6969 (light pink) for errors
-val LightOnError = Color(0xFFFFFFFF) // White for error text
-val LightOutline = Color(0xFF8A8A8A) // Medium gray for borders/dividers
+// ─── Base Palette ────────────────────────────────────────────────────────────────
+// core “brand” hues
+val ThemeColor           = Color(0xFF343434) // dark charcoal
+val LightThemeColor      = Color(0xFF43484B) // softer charcoal
 
-// Dark theme colors
-val DarkPrimary = Color(0xFF343434) // #343434 as primary
-val DarkOnPrimary = Color(0xFFFFFFFF) // White for contrast on primary
-val DarkSecondary = Color(0xFF464447) // #464447 as secondary
-val DarkOnSecondary = Color(0xFFFFFFFF) // White for contrast on secondary
-val DarkTertiary = Color(0xFF508A7B) // #508A7B (light green) as tertiary
-val DarkOnTertiary = Color(0xFFFFFFFF) // White for contrast on tertiary
-val DarkBackground = Color(0xFF121212) // Dark gray background
-val DarkOnBackground = Color(0xFFE6E6E6) // Light gray for text/icons
-val DarkSurface = Color(0xFF1E1E1E) // Slightly lighter for cards/surfaces
-val DarkOnSurface = Color(0xFFE6E6E6) // Light gray for surface text/icons
-val DarkError = Color(0xFFEE6969) // #EE6969 (light pink) for errors
-val DarkOnError = Color(0xFF000000) // #000000 (black) for error text
-val DarkOutline = Color(0xFF6B6B6B) // Medium gray for borders/dividers
+// greens
+val GreenColor           = Color(0xFF009254) // deep green
+val LightGreenColor      = Color(0xFF508A7B) // minty green
 
-// Basic Colors
-val Black = Color(0xFF000000)
-val White = Color(0xFFFFFFFF)
-val Gray = Color(0xFF808080)
-val DarkGray = Color(0xFF4B4B4B)
-val LightGray = Color(0xFFB0B0B0)
-val LightGray1 = Color(0xFFF3F2F1)
+// yellows
+val YellowColor          = Color(0xFFFFD953) // bright yellow
+val LightYellowColor     = Color(0xFFCF6212) // amber/burnt yellow
 
-// Primary, Secondary, Tertiary Colors
-val Primary = Color(0xFF343434)  // Dark shade as primary color
-val Secondary = Color(0xFF464447) // Another dark shade for secondary elements
-val Tertiary = Color(0xFF508A7B) // Light green (could be used for tertiary color)
-val Accent = Color(0xFF9E9E9E)  // A light accent color
+// reds
+val RedColor             = Color(0xFFED0006) // vivid red
+val LightRedColor        = Color(0xFFC50000) // softer red
+val VeryLightRedColor    = Color(0xFFF80000) // almost neon red
 
-// Background Colors
-val Background = Color(0xFFF8F8F8) // Light gray background
-//val DarkBackground = Color(0xFF121212) // Dark background for dark theme
-val SurfaceBackground = Color(0xFFFFFFFF) // White surface background
+// pink/magenta
+val LightPinkColor       = Color(0xFFEE6969)
+val LightMagentaColor    = Color(0xFFE7C0A7)
 
-// Surface and OnSurface Colors
-val Surface = Color(0xFFFFFFFF) // White for cards, modals, etc.
-val OnSurface = Color(0xFF000000) // Black for text/icons on surfaces
-//val DarkSurface = Color(0xFF1E1E1E) // Dark surface for dark theme
-val OnDarkSurface = Color(0xFFE6E6E6) // Light text/icons on dark surfaces
+// grays & neutrals
+val VeryDarkGrayColor    = Color(0xFF777E90)
+val DarkGrayColor        = Color(0xFF515151)
+val LightGrayColor       = Color(0xFF8E8E8E)
+val VeryLightGrayColor   = Color(0xFF47404D)
+val ThemeOptionBackground   = Color(0xFFF4F4F4)
+val BottomBarUnselectedOptionColor  = Color(0xFFE6E8EC)
 
-// Error and Warning Colors
-val Error = Color(0xFFEE6969) // Red for error states
-val OnError = Color(0xFFFFFFFF) // White text/icons on error
-val Warning = Color(0xFFFFC107) // Amber color for warnings
-val OnWarning = Color(0xFF000000) // Black text/icons on warning
 
-// Text Colors
-val OnPrimary = Color(0xFFFFFFFF) // White text/icons on primary background
-val OnSecondary = Color(0xFFFFFFFF) // White text/icons on secondary background
-val OnBackground = Color(0xFF000000) // Black text/icons on background
-val OnSurfaceLight = Color(0xFF000000) // Black text/icons on light surface
-val OnSurfaceDark = Color(0xFFE6E6E6) // Light text/icons on dark surface
+// blacks & whites
+val BlackColor           = Color(0xFF000000)
+val LightBlackColor      = Color(0xFF464447)
+val VeryLightBlackColor  = Color(0xFF33302E)
+val PlaceholderColor            = Color(0xFF020202)
+val PlaceholderColorVariant     = Color(0xFF121420)
+val LightBlackColorTitle     = Color(0xFF332218)
+val WhiteColor           = Color(0xFFFFFFFF)
+val LightWhiteColor      = Color(0xFFFAFAFA)
+val VeryLightWhiteColor  = Color(0x25FFFFFF) // 15% opacity white
 
-// Shades of Blue
-val Blue = Color(0xFF2196F3) // Main blue color
-val LightBlue = Color(0xFF03A9F4) // Lighter blue for accents
-val DarkBlue = Color(0xFF1976D2) // Darker blue for primary dark
-val NavyBlue = Color(0xFF000080) // Navy blue for more depth
+val DarkThemeColor       = Color(0xFF141416)
 
-// Shades of Green
-val Green = Color(0xFF4CAF50) // Regular green for success
-val LightGreen = Color(0xFF8BC34A) // Light green for accents
-val DarkGreen = Color(0xFF388E3C) // Dark green for backgrounds or accents
+// ─── Light Theme ────────────────────────────────────────────────────────────────
+val LightPrimary          = ThemeColor                // brand color
+val LightOnPrimary        = WhiteColor                // text/icons on primary
 
-// Shades of Red
-val Red = Color(0xFFF44336) // Red for error states
-val LightRed = Color(0xFFEF5350) // Lighter red for subtle warnings or highlights
-val DarkRed = Color(0xFFD32F2F) // Darker red for deep error states
+val LightSecondary        = DarkGrayColor             // accent
+val LightOnSecondary      = BlackColor                // text/icons on secondary
 
-// Shades of Yellow
-val Yellow = Color(0xFFFFEB3B) // Bright yellow for highlights
-val LightYellow = Color(0xFFFFF176) // Lighter yellow for subtle accents
-val DarkYellow = Color(0xFFFBC02D) // Darker yellow for strong highlights
+val LightTertiary         = LightGrayColor            // highlight
+val LightOnTertiary       = BlackColor                // text/icons on tertiary
 
-// Shades of Purple
-val Purple = Color(0xFF9C27B0) // Purple color for some backgrounds or accents
-val LightPurple = Color(0xFFBA68C8) // Light purple
-val DarkPurple = Color(0xFF8E24AA) // Dark purple
+val LightBackground       = LightWhiteColor           // app background
+val LightOnBackground     = BlackColor                // text/icons on background
 
-// Shades of Pink
-val Pink = Color(0xFFE91E63) // Pink color for highlights
-val LightPink = Color(0xFFF06292) // Light pink
-val DarkPink = Color(0xFFC2185B) // Darker pink
+val LightSurface          = WhiteColor                // cards, sheets
+val LightOnSurface        = BlackColor                // text/icons on surface
 
-// Shades of Brown
-val Brown = Color(0xFF795548) // Brown for earthy tones
-val LightBrown = Color(0xFFBCAAA4) // Lighter brown for subtle accents
-val DarkBrown = Color(0xFF3E2723) // Dark brown for deep accents
+val LightError            = RedColor                  // errors
+val LightOnError          = WhiteColor                // text/icons on error
 
-// Teal Colors
-val Teal = Color(0xFF009688) // Teal color
-val LightTeal = Color(0xFF80CBC4) // Light teal
-val DarkTeal = Color(0xFF004D40) // Dark teal
+val LightOutline          = LightGrayColor            // dividers/borders
+val LightOutlineVariant   = VeryLightGrayColor        // secondary outlines
 
-// Custom Colors for UI elements
-val ButtonBackground = Color(0xFF6200EE) // Primary button background color
-val ButtonText = Color(0xFFFFFFFF) // White text on buttons
-val DividerColor = Color(0xFFBDBDBD) // Divider lines color
+// ─── Dark Theme ─────────────────────────────────────────────────────────────────
+val DarkPrimary           = LightThemeColor           // softer brand on dark
+val DarkOnPrimary         = WhiteColor                // text/icons on primary
 
-// Border colors
-val BorderColor = Color(0xFF8A8A8A) // Gray for borders
-val DarkBorderColor = Color(0xFF616161) // Darker border for dark theme
+val DarkSecondary         = VeryDarkGrayColor         // accent on dark
+val DarkOnSecondary       = BlackColor                // text/icons on secondary
 
-// Shadows
-val ShadowColor = Color(0x66000000) // Semi-transparent black for shadows
+val DarkTertiary          = DarkGrayColor             // highlight on dark
+val DarkOnTertiary        = BlackColor                // text/icons on tertiary
 
-// Custom Light and Dark Mode Colors
-val LightModeBackground = Color(0xFFF8F8F8) // Background color for light theme
-val DarkModeBackground = Color(0xFF121212) // Background color for dark theme
+val DarkBackground        = BlackColor                // app background
+val DarkOnBackground      = WhiteColor                // text/icons on background
+
+val DarkSurface           = DarkGrayColor             // cards, sheets on dark
+val DarkOnSurface         = WhiteColor                // text/icons on surface
+
+val DarkError             = LightRedColor             // errors on dark
+val DarkOnError           = BlackColor                // text/icons on error
+
+val DarkOutline           = VeryDarkGrayColor         // dividers/borders
+val DarkOutlineVariant    = LightGrayColor            // secondary outlines

@@ -5,7 +5,7 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.ShoppingCart
-import com.flux.store.model.response.BottomNavigation
+import com.flux.store.model.dto.BottomNavigation
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.helper.Constants
 

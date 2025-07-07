@@ -13,7 +13,7 @@ import com.flux.store.helper.LocalBottomBarVisible
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val startRoute = SplashRoutes.SplashScreen.toRoute()
     val bottomBarVisible = LocalBottomBarVisible.current

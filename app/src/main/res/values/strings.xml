@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">Flux Store</string>
 
+    //Splash Screen
+    <string name="welcome_to_gem_store">Welcome to GemStore!</string>
+    <string name="the_home_for">The home for a fashionista</string>
+    <string name="get_started">Get Started</string>
+
+    // Intro Screen
+    <string name="first_intro_title">Discover something new</string>
+    <string name="first_intro_description">Special new arrivals just for you</string>
+    <string name="second_intro_title">Update trendy outfit</string>
+    <string name="second_intro_description">Favorite brands and hottest trends</string>
+    <string name="third_intro_title">Explore your true style</string>
+    <string name="third_intro_description">Relax and let us bring the style to you</string>
+    <string name="shopping_now">Shopping Now</string>
+    <string name="next">Next →</string>
+
     //Registration screen string
     <string name="create_your_account">Create your account</string>
     <string name="hint_enter_your_name">Enter your name</string>
@@ -31,4 +46,9 @@
     <string name="your_password_has_changed">Your password has been changed</string>
     <string name="discover_now">Welcome back! Discover now!</string>
     <string name="browse_home">Browse home</string>
+    <string name="user_name">User Name</string>
+    <string name="user_email">useremail@gmail.com</string>
+
+    //Home Screen
+    <string name="other">OTHER</string>
 </resources>

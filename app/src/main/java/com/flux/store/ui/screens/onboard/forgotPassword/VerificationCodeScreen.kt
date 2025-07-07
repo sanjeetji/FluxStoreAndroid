@@ -37,12 +37,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +53,7 @@ import com.flux.store.R
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
+import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.ForgotPasswordViewmodel
 
 @Composable
@@ -113,13 +115,14 @@ fun VerificationCodeScreen(
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = tr(R.string.verification_code),
-            style = TextStyle(fontSize = 24.sp)
+            style = MaterialTheme.typography.headlineMedium,
+            color = Black,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = tr(R.string.verification_code_description),
-            style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default)
-        )
+            style = MaterialTheme.typography.bodyMedium,
+            color = Black,        )
         Spacer(modifier = Modifier.height(172.dp))
 
         // OTP Input Field
@@ -149,12 +152,16 @@ fun VerificationCodeScreen(
                 .height(50.dp)
                 .semantics { contentDescription = "Submit verification button" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = ThemeColor,
+                contentColor = White
             ),
+            shape = RoundedCornerShape(12.dp),
             enabled = otp.length == otpLength
         ) {
-            Text(tr(R.string.confirm))
+            Text(
+                tr(R.string.confirm),
+                style = MaterialTheme.typography.titleMedium,
+                color = White)
         }
     }
 }

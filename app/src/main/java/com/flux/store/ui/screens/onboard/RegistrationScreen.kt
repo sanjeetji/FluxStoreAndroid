@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -44,27 +45,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flux.store.R
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.Gray
-import com.flux.store.ui.theme.LightGray1
 import com.flux.store.helper.Helper
 import com.flux.store.helper.localizationHelper.tr
+import com.flux.store.ui.theme.BlackColor
+import com.flux.store.ui.theme.LightGrayColor
+import com.flux.store.ui.theme.LightWhiteColor
+import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
@@ -106,11 +108,8 @@ fun RegistrationScreen(
     ) {
         Text(
             text = tr(R.string.create_your_account),
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal
-            ),
-            color = MaterialTheme.colorScheme.onBackground, // #000000 (light) or #E6E6E6 (dark)
+            style = MaterialTheme.typography.headlineMedium,
+            color = Black,
             modifier = Modifier.padding(top = 32.dp)
         )
 
@@ -122,12 +121,13 @@ fun RegistrationScreen(
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_name),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }, // Hint text shown when TextField is empty
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" }
                 .focusRequester(focusRequester), // Attach FocusRequester
             singleLine = true,
@@ -135,21 +135,20 @@ fun RegistrationScreen(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Person,  // Replace with your custom icon or drawable
-                    contentDescription = "Person Icon",
-                    tint = if (isFocused.value) Color.White else Color.Black
+                    contentDescription = "Person Icon"
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
@@ -170,33 +169,33 @@ fun RegistrationScreen(
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_phone_no),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             },
             textStyle = TextStyle(fontSize = 18.sp),
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Phone,  // Replace with your custom icon or drawable
                     contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
@@ -216,33 +215,33 @@ fun RegistrationScreen(
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_email),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             },
             textStyle = TextStyle(fontSize = 18.sp),
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Email,  // Replace with your custom icon or drawable
                     contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
@@ -263,32 +262,32 @@ fun RegistrationScreen(
             placeholder = {
                 Text(
                     tr(R.string.hint_enter_your_password),
-                    style = TextStyle(fontSize = 14.sp)
+                    style = MaterialTheme.typography.bodySmall,
                 )
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)))
+                .clip(shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Lock,  // Replace with your custom icon or drawable
                     contentDescription = "Person Icon",
-                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Gray,  // Replace with your focused color
-                unfocusedContainerColor = LightGray1,  // Replace with your unfocused color
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray,
-                focusedIndicatorColor = Color.Gray,  // Customize indicator color when focused
-                unfocusedLabelColor = Gray,  // Customize label color when unfocused
-                focusedLabelColor = Color.White,  // Customize label color when focused
-                unfocusedIndicatorColor = LightGray1
+                focusedContainerColor = LightGrayColor,
+                unfocusedContainerColor = LightWhiteColor,
+                focusedTextColor = White,
+                unfocusedTextColor = BlackColor,
+                focusedPlaceholderColor = ThemeColor,
+                unfocusedPlaceholderColor = LightGrayColor,
+                focusedIndicatorColor = LightGrayColor,
+                unfocusedIndicatorColor = White,
+                unfocusedLeadingIconColor = BlackColor,
+                focusedLeadingIconColor = White
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
@@ -316,12 +315,17 @@ fun RegistrationScreen(
                 contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
             )
         ) {
-            Text(tr(R.string.sing_up))
+            Text(tr(R.string.sing_up),
+                style = MaterialTheme.typography.titleMedium,
+                color = White)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = tr(R.string.or_sign_up_with), style = TextStyle(fontSize = 16.sp))
+        Text(text = tr(R.string.or_sign_up_with),
+            style = MaterialTheme.typography.bodySmall,
+            color = Black
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -359,15 +363,15 @@ fun RegistrationScreen(
 
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
-                text = tr(R.string.already_have_an_account), style = TextStyle(
-                    fontSize = 16.sp
-                )
+                text = tr(R.string.already_have_an_account),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black
             )
             Text(
-                text = tr(R.string.login), style = TextStyle(
-                    fontSize = 16.sp,
-                    textDecoration = TextDecoration.Underline,
-                ), modifier = Modifier.clickable {
+                text = tr(R.string.login),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Black
+                , modifier = Modifier.clickable {
                     onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
 //                    onNavigate(LoginRoutes.LanguagePickerScreen.toRoute(), "", LoginRoutes.RegistrationScreen.toRoute(), true)
                 }

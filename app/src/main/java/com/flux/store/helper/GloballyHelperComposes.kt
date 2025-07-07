@@ -6,3 +6,7 @@ val LocalBottomBarVisible =
   compositionLocalOf<MutableState<Boolean>> { 
     error("No BottomBar visibility provided") 
   }
+
+val LocalIsDarkTheme = compositionLocalOf<MutableState<Boolean>> {
+  error("No theme provided")
+}

@@ -33,19 +33,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.flux.store.R
+import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.model.response.IntroResponse
-import com.flux.store.navigation.routes.HomeRoutes
+import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
+import com.flux.store.ui.theme.WhiteColor
 import com.flux.store.viewmodel.IntroViewmodel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -64,18 +65,18 @@ fun IntroScreen(
 
     val introData = listOf(
         IntroResponse(
-            "Discover something new",
-            "Special new arrivals just for you",
+            tr(R.string.first_intro_title),
+            tr(R.string.first_intro_description),
             R.drawable.img_first_intro
         ),
         IntroResponse(
-            "Update trendy outfit",
-            "Favorite brands and hottest trends",
+            tr(R.string.second_intro_title),
+            tr(R.string.second_intro_description),
             R.drawable.img_second_intro
         ),
         IntroResponse(
-            "Explore your true style",
-            "Relax and let us bring the style to you",
+            tr(R.string.third_intro_title),
+            tr(R.string.third_intro_description),
             R.drawable.img_third_intro
         ),
     )
@@ -168,11 +169,8 @@ fun IntroScreen(
                                 .semantics { contentDescription = introData[page].title },
                             text = introData[page].title,
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onBackground
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = Black,
                         )
                         Text(
                             modifier = Modifier
@@ -181,11 +179,8 @@ fun IntroScreen(
                                 .semantics { contentDescription = introData[page].description },
                             text = introData[page].description,
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onBackground
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Black,
                         )
                         AsyncImage(
                             model = introData[page].image,
@@ -266,10 +261,11 @@ fun IntroScreen(
                 ) {
                     Text(
                         text = if (pagerState.currentPage == introData.lastIndex)
-                            "Shopping Now"
+                            tr(R.string.shopping_now)
                         else
-                            "Next →",
-                        color = MaterialTheme.colorScheme.onPrimary
+                            tr(R.string.next),
+                        color = WhiteColor,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
             }
@@ -278,7 +274,7 @@ fun IntroScreen(
 }
 
 fun handleShoppingNow(onNavigate: (target: String, payload: Any?, String?, Boolean) -> Unit) {
-    onNavigate(HomeRoutes.HomeScreen.toRoute(), null, null, false)
+    onNavigate(LoginRoutes.LoginScreen.toRoute(), null, null, false)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
