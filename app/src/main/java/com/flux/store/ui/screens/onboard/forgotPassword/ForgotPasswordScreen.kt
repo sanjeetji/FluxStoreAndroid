@@ -48,14 +48,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flux.store.R
+import com.flux.store.helper.ComposeFileHelper
 import com.flux.store.helper.Helper
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.LoginRoutes
-import com.flux.store.ui.theme.BlackColor
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.LightGrayColor
-import com.flux.store.ui.theme.LightWhiteColor
-import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.ForgotPasswordViewmodel
 
 @Composable
@@ -76,7 +73,7 @@ fun ForgotPasswordScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(start = 22.dp, end = 32.dp)
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -92,18 +89,18 @@ fun ForgotPasswordScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.primary)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(tr(R.string.forgot_password),
                 style = MaterialTheme.typography.headlineMedium,
-                color = Black,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 tr(R.string.forgot_password_description),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = Modifier.height(120.dp))
             TextField(
@@ -121,7 +118,7 @@ fun ForgotPasswordScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                    .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                     .semantics { contentDescription = "Name input field" },
                 singleLine = true,
                 leadingIcon = {
@@ -130,18 +127,7 @@ fun ForgotPasswordScreen(
                         contentDescription = "Person Icon",
                     )
                 },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = LightGrayColor,
-                    unfocusedContainerColor = LightWhiteColor,
-                    focusedTextColor = White,
-                    unfocusedTextColor = BlackColor,
-                    focusedPlaceholderColor = ThemeColor,
-                    unfocusedPlaceholderColor = LightGrayColor,
-                    focusedIndicatorColor = LightGrayColor,
-                    unfocusedIndicatorColor = White,
-                    unfocusedLeadingIconColor = BlackColor,
-                    focusedLeadingIconColor = White
-                ),
+                colors = ComposeFileHelper.defaultTextFieldColors(),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Email
@@ -163,7 +149,7 @@ fun ForgotPasswordScreen(
                     .height(50.dp)
                     .semantics { contentDescription = "Submit registration button" },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ThemeColor,
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
                     contentColor = White
                 ),
                 shape = RoundedCornerShape(12.dp),

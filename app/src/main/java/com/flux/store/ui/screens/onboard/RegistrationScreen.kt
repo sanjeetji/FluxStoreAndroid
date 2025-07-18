@@ -59,14 +59,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flux.store.R
+import com.flux.store.helper.ComposeFileHelper
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.helper.Helper
 import com.flux.store.helper.localizationHelper.tr
-import com.flux.store.ui.theme.BlackColor
-import com.flux.store.ui.theme.LightGrayColor
-import com.flux.store.ui.theme.LightWhiteColor
-import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
@@ -102,14 +99,16 @@ fun RegistrationScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .background(MaterialTheme.colorScheme.surface) // #F8F8F8 (light) or #121212 (dark)
+            .background(
+                MaterialTheme.colorScheme.primary
+            )
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = tr(R.string.create_your_account),
             style = MaterialTheme.typography.headlineMedium,
-            color = Black,
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(top = 32.dp)
         )
 
@@ -127,7 +126,7 @@ fun RegistrationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" }
                 .focusRequester(focusRequester), // Attach FocusRequester
             singleLine = true,
@@ -138,18 +137,7 @@ fun RegistrationScreen(
                     contentDescription = "Person Icon"
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text
@@ -176,7 +164,7 @@ fun RegistrationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
@@ -185,18 +173,7 @@ fun RegistrationScreen(
                     contentDescription = "Person Icon",
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Phone
@@ -222,7 +199,7 @@ fun RegistrationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
@@ -231,18 +208,7 @@ fun RegistrationScreen(
                     contentDescription = "Person Icon",
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -268,7 +234,7 @@ fun RegistrationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
@@ -277,18 +243,7 @@ fun RegistrationScreen(
                     contentDescription = "Person Icon",
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
@@ -311,20 +266,22 @@ fun RegistrationScreen(
                 .height(50.dp)
                 .semantics { contentDescription = "Submit registration button" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary, // #464447
-                contentColor = MaterialTheme.colorScheme.onPrimary // #FFFFFF
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.primary
             )
         ) {
-            Text(tr(R.string.sing_up),
+            Text(
+                tr(R.string.sing_up),
                 style = MaterialTheme.typography.titleMedium,
-                color = White)
+                color = MaterialTheme.colorScheme.primary
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = tr(R.string.or_sign_up_with),
             style = MaterialTheme.typography.bodySmall,
-            color = Black
+            color = MaterialTheme.colorScheme.onPrimary
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -365,12 +322,12 @@ fun RegistrationScreen(
             Text(
                 text = tr(R.string.already_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = tr(R.string.login),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black
+                color = MaterialTheme.colorScheme.onPrimary
                 , modifier = Modifier.clickable {
                     onNavigate(LoginRoutes.LoginScreen.toRoute(),"" , LoginRoutes.RegistrationScreen.toRoute(), true)
 //                    onNavigate(LoginRoutes.LanguagePickerScreen.toRoute(), "", LoginRoutes.RegistrationScreen.toRoute(), true)

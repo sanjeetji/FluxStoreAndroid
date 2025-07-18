@@ -53,7 +53,6 @@ import com.flux.store.R
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.ForgotPasswordViewmodel
 
 @Composable
@@ -99,7 +98,7 @@ fun VerificationCodeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(start = 22.dp, end = 32.dp)
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -116,13 +115,13 @@ fun VerificationCodeScreen(
         Text(
             text = tr(R.string.verification_code),
             style = MaterialTheme.typography.headlineMedium,
-            color = Black,
+            color = MaterialTheme.colorScheme.onPrimary,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = tr(R.string.verification_code_description),
             style = MaterialTheme.typography.bodyMedium,
-            color = Black,        )
+            color = MaterialTheme.colorScheme.onPrimary,        )
         Spacer(modifier = Modifier.height(172.dp))
 
         // OTP Input Field
@@ -152,8 +151,8 @@ fun VerificationCodeScreen(
                 .height(50.dp)
                 .semantics { contentDescription = "Submit verification button" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = ThemeColor,
-                contentColor = White
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(12.dp),
             enabled = otp.length == otpLength
@@ -161,7 +160,7 @@ fun VerificationCodeScreen(
             Text(
                 tr(R.string.confirm),
                 style = MaterialTheme.typography.titleMedium,
-                color = White)
+                color = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -253,7 +252,7 @@ fun OTPInputField(
 @Preview(showBackground = true)
 @Composable
 fun VerificationCodeScreenPreview() {
-    ComposeAppTheme {
+    ComposeAppTheme(false) {
         VerificationCodeScreen(
             viewModel = ForgotPasswordViewmodel(),
             onNavigate = { _, _, _, _ -> },

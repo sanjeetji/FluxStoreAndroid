@@ -7,8 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,9 +15,6 @@ import androidx.compose.ui.unit.sp
 import com.flux.store.R
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.LightBlackColorTitle
-import com.flux.store.ui.theme.LightWhiteColor
-import com.flux.store.ui.theme.WhiteColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +41,7 @@ fun BottomSheetHelper(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(WhiteColor)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -54,14 +49,14 @@ fun BottomSheetHelper(
                     modifier = Modifier
                         .size(width = 40.dp, height = 4.dp)
                         .background(
-                            Color.LightGray,
+                            MaterialTheme.colorScheme.secondary,
                             shape = RoundedCornerShape(5.dp)   // 5 dp corner radius
                         )
                 )
             }
         },
         shape           = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        containerColor  = Color.White
+        containerColor  = MaterialTheme.colorScheme.primary
     ) {
         Column(
             modifier = Modifier
@@ -74,7 +69,7 @@ fun BottomSheetHelper(
             Box(
                 modifier = Modifier
                     .size(84.dp)
-                    .background(LightWhiteColor, shape = RoundedCornerShape(50.dp)),
+                    .background(MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(50.dp)),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
@@ -89,7 +84,7 @@ fun BottomSheetHelper(
             Text(
                 text      = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
 
             Spacer(Modifier.height(8.dp))
@@ -97,7 +92,7 @@ fun BottomSheetHelper(
             Text(
                 text      = description,
                 style = MaterialTheme.typography.bodySmall,
-                color     = LightBlackColorTitle,
+                color     = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.Center
             )
 
@@ -128,7 +123,7 @@ fun BottomSheetHelper(
 @Preview(showBackground = true)
 @Composable
 fun BottomSheetHelperPreview() {
-    ComposeAppTheme {
+    ComposeAppTheme(false) {
         BottomSheetHelper(
             onDismiss = {},
             title = tr(R.string.your_password_has_changed),

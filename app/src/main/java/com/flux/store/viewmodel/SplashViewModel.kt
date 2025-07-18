@@ -22,8 +22,8 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _hasSeenIntro.value = false//make it true to skip intro screen
-            _isUserLoggedIn.value = false//appStateManager.isLoggedIn.first()
+            _hasSeenIntro.value = true//make it true to skip intro screen
+            _isUserLoggedIn.value = true//appStateManager.isLoggedIn.first()
         }
     }
 }

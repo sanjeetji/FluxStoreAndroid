@@ -1,5 +1,7 @@
 package com.flux.store.navigation.bottomNav
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -15,16 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.flux.store.ui.theme.BottomBarUnselectedOptionColor
-import com.flux.store.ui.theme.ThemeColor
-import com.flux.store.ui.theme.WhiteColor
+import com.flux.store.ui.theme.ComposeAppTheme
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -32,9 +31,11 @@ fun BottomBar(navController: NavHostController) {
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
-        containerColor = WhiteColor,
+        containerColor = MaterialTheme.colorScheme.primary,
         tonalElevation = 0.dp,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.primary)
+            .border(1.dp,color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(40.dp))
             .height(72.dp)
             .clip(RoundedCornerShape(40.dp)),
         ) {
@@ -55,11 +56,11 @@ fun BottomBar(navController: NavHostController) {
                 },
                 alwaysShowLabel = false,
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor   = ThemeColor,
-                    unselectedIconColor = BottomBarUnselectedOptionColor,
-                    selectedTextColor   = ThemeColor,
-                    unselectedTextColor = BottomBarUnselectedOptionColor,
-                    indicatorColor      = Color.Transparent
+                    selectedIconColor   = MaterialTheme.colorScheme.onPrimary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    selectedTextColor   = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor      = MaterialTheme.colorScheme.primary
                 ),
                 icon = {
                     Column(
@@ -69,12 +70,12 @@ fun BottomBar(navController: NavHostController) {
                         Icon(
                             imageVector   = item.icon,
                             contentDescription = item.label,
-                            tint          = if (currentRoute == route) ThemeColor else BottomBarUnselectedOptionColor
+                            tint          = if (currentRoute == route) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             text   = item.label,
                             style  = MaterialTheme.typography.labelSmall,
-                            color  = if (currentRoute == route) ThemeColor else BottomBarUnselectedOptionColor
+                            color  = if (currentRoute == route) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -87,6 +88,8 @@ fun BottomBar(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 private fun BottomBarPreview() {
-    BottomBar(navController = NavHostController(LocalContext.current))
+    ComposeAppTheme(false) {
+        BottomBar(navController = NavHostController(LocalContext.current))
+    }
 }
 

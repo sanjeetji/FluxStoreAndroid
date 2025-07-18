@@ -56,16 +56,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
+import com.flux.store.helper.ComposeFileHelper
 import com.flux.store.helper.Helper
 import com.flux.store.helper.clearAndNavigateTo
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.LoginRoutes
-import com.flux.store.ui.theme.BlackColor
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.LightGrayColor
-import com.flux.store.ui.theme.LightWhiteColor
-import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 
 @Composable
@@ -105,7 +102,7 @@ fun LoginScreen(
         Text(
             text = tr(R.string.login_into_your_account),
             style = MaterialTheme.typography.headlineMedium,
-            color = Black,
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(top = 32.dp)
         )
 
@@ -124,7 +121,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
@@ -133,18 +130,7 @@ fun LoginScreen(
                     contentDescription = "Person Icon",
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -170,7 +156,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(10.dp))
-                .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                 .semantics { contentDescription = "Name input field" },
             singleLine = true,
             leadingIcon = {
@@ -179,18 +165,7 @@ fun LoginScreen(
                     contentDescription = "Person Icon",
                 )
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayColor,
-                unfocusedContainerColor = LightWhiteColor,
-                focusedTextColor = White,
-                unfocusedTextColor = BlackColor,
-                focusedPlaceholderColor = ThemeColor,
-                unfocusedPlaceholderColor = LightGrayColor,
-                focusedIndicatorColor = LightGrayColor,
-                unfocusedIndicatorColor = White,
-                unfocusedLeadingIconColor = BlackColor,
-                focusedLeadingIconColor = White
-            ),
+            colors = ComposeFileHelper.defaultTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
@@ -213,7 +188,7 @@ fun LoginScreen(
                 .wrapContentSize(),
             text = tr(R.string.forgot_password),
             style = MaterialTheme.typography.bodySmall,
-            color = Black
+            color = MaterialTheme.colorScheme.onPrimary
         )
 
         Spacer(modifier = Modifier.height(48.dp))
@@ -227,22 +202,22 @@ fun LoginScreen(
                 .height(50.dp)
                 .semantics { contentDescription = "Submit registration button" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = ThemeColor,
-                contentColor = White
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
                 tr(R.string.login),
                 style = MaterialTheme.typography.titleMedium,
-                color = White,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
         Spacer(modifier = Modifier.height(22.dp))
         Text(
             text = tr(R.string.or_login_with),
             style = MaterialTheme.typography.bodySmall,
-            color = Black
+            color = MaterialTheme.colorScheme.onPrimary
         )
         Spacer(modifier = Modifier.height(22.dp))
         Row(
@@ -281,12 +256,12 @@ fun LoginScreen(
             Text(
                 text = tr(R.string.do_not_have_account),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = tr(R.string.sing_up),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black, modifier = Modifier.clickable {
+                color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.clickable {
                     onNavigate(
                         LoginRoutes.RegistrationScreen.toRoute(),
                         "",

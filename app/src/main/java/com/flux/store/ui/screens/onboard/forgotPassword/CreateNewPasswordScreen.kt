@@ -59,14 +59,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
 import com.flux.store.helper.BottomSheetHelper
+import com.flux.store.helper.ComposeFileHelper
 import com.flux.store.helper.clearAndNavigateTo
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.HomeRoutes
-import com.flux.store.ui.theme.BlackColor
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.LightGrayColor
-import com.flux.store.ui.theme.LightWhiteColor
-import com.flux.store.ui.theme.ThemeColor
 import com.flux.store.viewmodel.ForgotPasswordViewmodel
 
 @Composable
@@ -86,12 +83,12 @@ fun CreateNewPasswordScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.primary)
                 .padding(start = 22.dp, end = 32.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -106,13 +103,13 @@ fun CreateNewPasswordScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Text(tr(R.string.create_new_password),
                 style = MaterialTheme.typography.headlineMedium,
-                color = Black,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 tr(R.string.create_new_password_description),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Black,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
             Spacer(modifier = Modifier.height(64.dp))
             TextField(
@@ -132,7 +129,7 @@ fun CreateNewPasswordScreen(
                     .fillMaxWidth()
                     .height(56.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                    .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                     .semantics { contentDescription = "Password input field" },
                 singleLine = true,
                 leadingIcon = {
@@ -150,18 +147,7 @@ fun CreateNewPasswordScreen(
                     }
                 },
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = LightGrayColor,
-                    unfocusedContainerColor = LightWhiteColor,
-                    focusedTextColor = White,
-                    unfocusedTextColor = BlackColor,
-                    focusedPlaceholderColor = ThemeColor,
-                    unfocusedPlaceholderColor = LightGrayColor,
-                    focusedIndicatorColor = LightGrayColor,
-                    unfocusedIndicatorColor = White,
-                    unfocusedLeadingIconColor = BlackColor,
-                    focusedLeadingIconColor = White
-                ),
+                colors = ComposeFileHelper.defaultTextFieldColors(),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next, keyboardType = KeyboardType.Password
                 ),
@@ -185,7 +171,7 @@ fun CreateNewPasswordScreen(
                     .fillMaxWidth()
                     .height(56.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(0.1.dp, BlackColor, shape = RoundedCornerShape(10.dp))
+                    .border(0.1.dp, MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(10.dp))
                     .semantics { contentDescription = "Confirm password input field" },
                 singleLine = true,
                 leadingIcon = {
@@ -203,18 +189,7 @@ fun CreateNewPasswordScreen(
                     }
                 },
                 visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = LightGrayColor,
-                    unfocusedContainerColor = LightWhiteColor,
-                    focusedTextColor = White,
-                    unfocusedTextColor = BlackColor,
-                    focusedPlaceholderColor = ThemeColor,
-                    unfocusedPlaceholderColor = LightGrayColor,
-                    focusedIndicatorColor = LightGrayColor,
-                    unfocusedIndicatorColor = White,
-                    unfocusedLeadingIconColor = BlackColor,
-                    focusedLeadingIconColor = White
-                ),
+                colors = ComposeFileHelper.defaultTextFieldColors(),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done, keyboardType = KeyboardType.Password
                 ),
@@ -236,15 +211,15 @@ fun CreateNewPasswordScreen(
                     .height(50.dp)
                     .semantics { contentDescription = "Submit registration button" },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ThemeColor,
-                    contentColor = White
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                    contentColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     tr(R.string.confirm_password),
                     style = MaterialTheme.typography.titleMedium,
-                    color = White,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }

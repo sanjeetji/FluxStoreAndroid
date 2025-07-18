@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -42,11 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.flux.store.R
+import com.flux.store.helper.LocalBottomBarVisible
+import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.model.response.IntroResponse
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.ui.theme.ComposeAppTheme
-import com.flux.store.ui.theme.WhiteColor
 import com.flux.store.viewmodel.IntroViewmodel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -113,7 +113,7 @@ fun IntroScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.primary)
         )
         {
             // Top Text Area
@@ -121,7 +121,7 @@ fun IntroScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.primary)
             ) {
             }
             // Bottom Half with Overlay
@@ -129,7 +129,7 @@ fun IntroScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
             }
@@ -170,7 +170,7 @@ fun IntroScreen(
                             text = introData[page].title,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.headlineSmall,
-                            color = Black,
+                            color = MaterialTheme.colorScheme.onPrimary,
                         )
                         Text(
                             modifier = Modifier
@@ -180,7 +180,7 @@ fun IntroScreen(
                             text = introData[page].description,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            color = MaterialTheme.colorScheme.onPrimary,
                         )
                         AsyncImage(
                             model = introData[page].image,
@@ -203,12 +203,12 @@ fun IntroScreen(
                                 .padding(horizontal = 4.dp)
                                 .size(20.dp)
                                 .background(
-                                    color = if (isSelected) Color.White else Color.Transparent,
+                                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent,
                                     shape = CircleShape
                                 )
                                 .border(
                                     width = 1.dp,
-                                    color = MaterialTheme.colorScheme.outline,
+                                    color = MaterialTheme.colorScheme.primary,
                                     shape = CircleShape
                                 )
                                 .semantics {
@@ -228,10 +228,7 @@ fun IntroScreen(
 
                 Button(
                     onClick = {
-                        Log.e(
-                            "OnCLicked....",
-                            "Current Page is ${pagerState.currentPage} Index is ${introData.size} Last index is ${introData.lastIndex}"
-                        )
+                        Log.e("OnCLicked....", "Current Page is ${pagerState.currentPage} Index is ${introData.size} Last index is ${introData.lastIndex}")
                         if (pagerState.currentPage == introData.lastIndex) {
                             handleShoppingNow(onNavigate)
                         } else {
@@ -247,16 +244,11 @@ fun IntroScreen(
                         .padding(top = 20.dp)
                         .width(200.dp)
                         .height(50.dp)
-                        .border(
-                            2.dp,
-                            MaterialTheme.colorScheme.outline,
-                            CircleShape
-                        ) // #6B6B6B (dark) or #8A8A8A (light)
+                        .border(2.dp, Color.White, CircleShape)
                         .semantics { contentDescription = "Navigate to next page or home" },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor =
-                            MaterialTheme.colorScheme.secondary
+                        containerColor = MaterialTheme.colorScheme.surfaceBright
                     )
                 ) {
                     Text(
@@ -264,7 +256,7 @@ fun IntroScreen(
                             tr(R.string.shopping_now)
                         else
                             tr(R.string.next),
-                        color = WhiteColor,
+                        color = Color.White,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
@@ -281,7 +273,9 @@ fun handleShoppingNow(onNavigate: (target: String, payload: Any?, String?, Boole
 @Preview(showBackground = true)
 @Composable
 fun IntroScreenView() {
-    ComposeAppTheme {
+    ComposeAppTheme(false) {
+        LocalBottomBarVisible provides remember { mutableStateOf(true) }
+        LocalIsDarkTheme provides remember { mutableStateOf(false) }
         IntroScreen(
             IntroViewmodel(), {},
             onNavigate = { route, _, _, _ -> },

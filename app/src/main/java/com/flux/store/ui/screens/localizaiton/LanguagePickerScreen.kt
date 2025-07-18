@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +38,7 @@ import com.flux.store.helper.localizationHelper.LocalLocalizationManager
 import com.flux.store.helper.localizationHelper.LocalStrings
 import com.flux.store.helper.localizationHelper.LocalizationManager
 import com.flux.store.helper.localizationHelper.tr
+import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.LoginRegistrationViewmodel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -65,7 +65,7 @@ fun LanguagePickerScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(White)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Column(
             modifier = Modifier
@@ -84,7 +84,9 @@ fun LanguagePickerScreen(
                     .align(Alignment.CenterHorizontally)
                     .clickable { expanded = true }
                     .border(1.dp, MaterialTheme.colorScheme.primary)
-                    .padding(8.dp))
+                    .padding(8.dp),
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
             DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
                 langs.forEach { (code, name) ->
                     DropdownMenuItem(text = { Text(name) }, onClick = {
@@ -104,22 +106,24 @@ fun LanguagePickerScreen(
 @Preview(showBackground = true)
 @Composable
 fun LanguagePickerScreenPreview() {
-    val context = LocalContext.current
-    val dummyMgr = LocalizationManager(
-        state = AppStateManager(context)
-    )
-    val sampleStrings = mapOf(
-        "please_select_any_language" to "Please select any language",
-        "en" to "English",
-        "hi" to "हिन्दी",
-        "fr" to "Français"
-    )
-    CompositionLocalProvider(
-        LocalLocalizationManager provides dummyMgr, LocalStrings provides sampleStrings
-    ) {
-        LanguagePickerScreen(
-            viewModel = LoginRegistrationViewmodel(),
-            onNavigate = { _, _, _, _ -> }, onBack = {})
+    ComposeAppTheme(false) {
+        val context = LocalContext.current
+        val dummyMgr = LocalizationManager(
+            state = AppStateManager(context)
+        )
+        val sampleStrings = mapOf(
+            "please_select_any_language" to "Please select any language",
+            "en" to "English",
+            "hi" to "हिन्दी",
+            "fr" to "Français"
+        )
+        CompositionLocalProvider(
+            LocalLocalizationManager provides dummyMgr, LocalStrings provides sampleStrings
+        ) {
+            LanguagePickerScreen(
+                viewModel = LoginRegistrationViewmodel(),
+                onNavigate = { _, _, _, _ -> }, onBack = {})
+        }
     }
 }
 
