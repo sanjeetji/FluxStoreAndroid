@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,14 +19,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -56,40 +50,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
 import com.flux.store.R
 import com.flux.store.helper.HomeScreenEnum
 import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.helper.rememberNavItems
-import com.flux.store.model.response.HomeBanner
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.repository.HomeRepository
+import com.flux.store.ui.screens.dynamicHelperView.BannerInsideTitle
+import com.flux.store.ui.screens.dynamicHelperView.BannerOutsideTitle
+import com.flux.store.ui.screens.dynamicHelperView.ViewPagerView
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.HomeViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel,
-    onNavigate: (route: String, payload: Any?, popUpToRoute: String?, inclusive: Boolean) -> Unit,
-    navController: NavHostController,
-    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
-) {
+fun HomeScreen(viewModel: HomeViewModel, onNavigate: (route: String, payload: Any?, popUpToRoute: String?, inclusive: Boolean) -> Unit, navController: NavHostController, drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)) {
     val scope = rememberCoroutineScope()
     BackHandler {
         navController.popBackStack()
@@ -322,18 +309,19 @@ fun DrawerItem(icon: Int, label: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun HomeContent(
-    viewModel: HomeViewModel,
-    onNavigate: (String, Any?, String?, Boolean) -> Unit,
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-    drawerState: DrawerState
-) {
+fun HomeContent(viewModel: HomeViewModel,
+                onNavigate: (String, Any?, String?, Boolean) -> Unit,
+                navController: NavHostController,
+                modifier: Modifier = Modifier,
+                drawerState: DrawerState) {
 
     val context = LocalContext.current
     val categoryData = viewModel.categoryData.collectAsState().value
     val homeBannerData = viewModel.homeBannerData.collectAsState().value
     var selectedIndex by remember { mutableIntStateOf(0) }
+    var showHorizontally by remember { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
     val tag = "HomeScreen"
 
     Column(
@@ -371,7 +359,7 @@ fun HomeContent(
                     Spacer(modifier = Modifier.height(10.dp))
                     Box(
                         modifier = Modifier
-                            .size(36.dp)
+                            .size(32.dp)
                             .clip(shape = RoundedCornerShape(25.dp))
                             .background(
                                 if (isSelected)
@@ -384,7 +372,7 @@ fun HomeContent(
                         Image(
                             painterResource(categoryData[index].categoryImage),
                             contentDescription = category.categoryName,
-                            modifier = Modifier.size(26.dp),
+                            modifier = Modifier.size(24.dp),
                             colorFilter = ColorFilter.tint(
                                 if (isSelected)
                                     MaterialTheme.colorScheme.onSecondary
@@ -420,12 +408,29 @@ fun HomeContent(
                     HomeScreenEnum.SINGLE_BANNER_VIEW.value ->{
                         items(pageData.data) { index ->
                             Log.d(tag, "SINGLE_BANNER_VIEW : ${pageData.data}")
-                            SingleBannerView(index)
+                            BannerInsideTitle(index)
                         }
                     }
                     HomeScreenEnum.LARGE_TALL_BANNER_LIST_VIEW.value ->{
-                        item {
-                            Log.d(tag, "LARGE_TALL_BANNER_LIST_VIEW : ${pageData.data}")
+                        if (showHorizontally) {
+                            val itemWidth = screenWidth * 0.86f  // tweak 0.80–0.90 to taste
+                            item {
+                                LazyRow {
+                                    items(pageData.data) { index ->
+                                        BannerOutsideTitle(index,
+                                            itemWidth = itemWidth,
+                                            imageHeight = 170.dp)
+                                    }
+                                }
+                            }
+                        } else {
+                            showHorizontally = true
+                            val itemWidth = screenWidth * 1f  // tweak 0.80–0.90 to taste
+                            items(pageData.data) { index ->
+                                BannerOutsideTitle(index,
+                                    itemWidth = itemWidth,
+                                    imageHeight = 170.dp)
+                            }
                         }
                     }
                     HomeScreenEnum.SMALL_WIDE_BANNER_LIST_VIEW.value ->{
@@ -449,126 +454,6 @@ fun HomeContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun ViewPagerView(viewPagerData: List<HomeBanner>) {
-    // Create a PagerState only for this banner list:
-    var isUserInteracting by remember { mutableStateOf(false) }
-    val viewPagerState = rememberPagerState(pageCount = {viewPagerData.size})
-
-    // Detect manual scrolling
-    LaunchedEffect(viewPagerState.isScrollInProgress) {
-        if (viewPagerState.isScrollInProgress) {
-            isUserInteracting = true
-            Log.d("IntroScreen", "Manual scroll detected: isUserInteracting = true")
-        } else if (isUserInteracting && !viewPagerState.isScrollInProgress) {
-            delay(500) // Wait for user to settle
-            isUserInteracting = false
-            Log.d("IntroScreen", "Manual scroll ended: isUserInteracting = false")
-        }
-    }
-
-    // Auto-scroll logic (simplified for brevity)
-    LaunchedEffect(Unit) {
-        while (true) {
-            if (!isUserInteracting) {
-                delay(1000)
-                val nextPage = (viewPagerState.currentPage + 1) % viewPagerData.size
-                viewPagerState.animateScrollToPage(nextPage)
-            }
-            delay(100)
-        }
-    }
-
-    HorizontalPager(
-        state = viewPagerState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(22.dp)
-            .semantics { contentDescription = "Image carousel" }
-    ) { page ->
-        Box(
-            modifier = Modifier.fillMaxWidth().height(170.dp)            // match your image height
-        ){
-            AsyncImage(
-                model = viewPagerData[page].bannerImage,
-                contentDescription = "Intro Image ${page + 1}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(170.dp)
-            )
-            Text(text = viewPagerData[page].bannerTitle,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.primary,
-                minLines = 2,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding( top = 40.dp, end = 16.dp)
-            )
-            LazyRow(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)    // tweak as needed
-                    .semantics { contentDescription = "Page indicators" }
-            ) {
-                items(viewPagerData.size) { index ->
-                    val isSelected = index == viewPagerState.currentPage
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .size(12.dp)          // smaller dot size
-                            .background(
-                                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                shape = CircleShape
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .semantics {
-                                contentDescription = "Page indicator ${index + 1}"
-                            }
-                    )
-                }
-            }
-        }
-
-    }
-}
-
-@Composable
-fun SingleBannerView(banner: HomeBanner) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        AsyncImage(
-            model              = banner.bannerImage,
-            contentDescription = banner.bannerTitle,
-            modifier           = Modifier
-                .fillMaxWidth()
-                .height(170.dp)
-                .clip(RoundedCornerShape(8.dp))
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            banner.bannerTitle,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 4.dp)
-        )
-        banner.bannerDescription?.let {
-            Text(
-                it,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
-    }
-}
 
 
 @SuppressLint("ViewModelConstructorInComposable")

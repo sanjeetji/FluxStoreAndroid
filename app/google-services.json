@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "280532852431",
-    "project_id": "flux-store-e658d",
-    "storage_bucket": "flux-store-e658d.firebasestorage.app"
+    "project_number": "907974936925",
+    "project_id": "flux-store-70202",
+    "storage_bucket": "flux-store-70202.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:280532852431:android:93ab8e89d64ace5c4621ba",
+        "mobilesdk_app_id": "1:907974936925:android:bdf07cd08a7437afce00b4",
         "android_client_info": {
           "package_name": "com.flux.store"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBuohj6BP8uNr2Vm6-lMl_qPuS0ltZNFJM"
+          "current_key": "AIzaSyDP6SInyFhbmbHYdJYPYDFcP2fIzEmJCro"
         }
       ],
       "services": {

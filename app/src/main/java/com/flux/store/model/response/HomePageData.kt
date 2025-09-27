@@ -20,5 +20,15 @@ data class HomeBanner(
     @SerializedName("banner_description")
     val bannerDescription: String?,
     @SerializedName("banner_image")
-    val bannerImage: Int
+    val bannerImage: String,
+    @SerializedName("data_header")
+    val dataHeader: DataHeader,
+): Parcelable
+
+@Parcelize
+data class DataHeader(
+    @SerializedName("header_title")
+    val headerTitle: String,
+    @SerializedName("view_all")
+    val viewAll: String
 ): Parcelable

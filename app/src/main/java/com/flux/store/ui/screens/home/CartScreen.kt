@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flux.store.ui.theme.LightGreenColor
 import com.flux.store.viewmodel.HomeViewModel
 
 @Composable
@@ -35,7 +36,8 @@ fun CartScreen(
     ) {
         Text(
             text = "Cart Screen",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            color = LightGreenColor
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) {

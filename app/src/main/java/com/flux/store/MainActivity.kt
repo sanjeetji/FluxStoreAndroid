@@ -37,8 +37,6 @@ class MainActivity : ComponentActivity() {
         )
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-
-
         setContent {
             ComposeAppTheme {
                 val strings by locMgr.strings.collectAsState()

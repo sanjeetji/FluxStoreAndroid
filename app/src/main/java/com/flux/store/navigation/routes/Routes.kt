@@ -1,29 +1,3 @@
-/*
-package sanjeet.demo.composeapp.navigation
-
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed interface Routes {
-    @Serializable data object SplashScreen : Routes
-    @Serializable data object IntroScreen:Routes
-    @Serializable data object RegistrationScreen:Routes
-    @Serializable data object HomeScreen : Routes
-    @Serializable data object CategoryScreen : Routes
-    @Serializable data object CartScreen : Routes
-    @Serializable data object ProfileScreen : Routes
-}
-
-fun Routes.toRoute(): String = when (this) {
-    Routes.SplashScreen             -> "splash"
-    Routes.IntroScreen              -> "intro"
-    Routes.RegistrationScreen       -> "registration"
-    Routes.HomeScreen               -> "home"
-    Routes.CategoryScreen           -> "category"
-    Routes.CartScreen               -> "cart"
-    is Routes.ProfileScreen         -> "profile"
-}*/
-
 package com.flux.store.navigation.routes
 
 import kotlinx.serialization.Serializable

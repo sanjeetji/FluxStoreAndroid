@@ -21,90 +21,78 @@ val MyCustomProductSansFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    headlineSmall = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
         letterSpacing = 0.sp
     ),
     headlineMedium = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 24.sp,
-        lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
-    headlineLarge = TextStyle(
-        fontFamily = MyCustomProductSansFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
-        lineHeight = 36.sp,
-        letterSpacing = 0.sp
-    ),
-    titleSmall = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 16.sp,
+        fontSize = 24.sp,
+        letterSpacing = 0.sp
+    ),
+    titleLarge = TextStyle(
+        fontFamily = MyCustomProductSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
         letterSpacing = 0.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 16.sp,
+        fontSize = 18.sp,
         letterSpacing = 0.sp,
     ),
-    titleLarge = TextStyle(
-        fontFamily = MyCustomProductSansFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.sp,
-    ),
-    bodySmall = TextStyle(
+    titleSmall = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 18.sp,
-        letterSpacing = 0.25.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = MyCustomProductSansFontFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.25.sp
+        fontSize = 18.sp,
+        letterSpacing = 0.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
-    labelSmall = TextStyle(
+    bodyMedium = TextStyle(
+        fontFamily = MyCustomProductSansFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        letterSpacing = 0.25.sp
+    ),
+    bodySmall = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 10.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 16.sp,
+        letterSpacing = 0.25.sp,
+    ),
+    labelLarge = TextStyle(
+        fontFamily = MyCustomProductSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        letterSpacing = 0.1.sp
     ),
     labelMedium = TextStyle(
         fontFamily = MyCustomProductSansFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp,
+    ),
+    labelSmall = TextStyle(
+        fontFamily = MyCustomProductSansFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
         letterSpacing = 0.5.sp
     ),
-    labelLarge = TextStyle(
-        fontFamily = MyCustomProductSansFontFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    )
 
 )
 
