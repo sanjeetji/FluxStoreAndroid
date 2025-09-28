@@ -8,7 +8,9 @@ data class HomePageData(
         @SerializedName("view_type")
         val viewType: Int,
         @SerializedName("data")
-        val data: List<HomeBanner>
+        val data: List<HomeBanner>,
+        @SerializedName("data_header")
+        val dataHeader: DataHeader,
     )
 
 @Parcelize
@@ -21,8 +23,6 @@ data class HomeBanner(
     val bannerDescription: String?,
     @SerializedName("banner_image")
     val bannerImage: String,
-    @SerializedName("data_header")
-    val dataHeader: DataHeader,
 ): Parcelable
 
 @Parcelize

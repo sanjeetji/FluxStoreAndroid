@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -55,11 +56,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
+import com.flux.store.helper.Helper.twoUpCardWidth
 import com.flux.store.helper.HomeScreenEnum
 import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.helper.LocalIsDarkTheme
@@ -67,8 +70,8 @@ import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.helper.rememberNavItems
 import com.flux.store.navigation.routes.LoginRoutes
 import com.flux.store.repository.HomeRepository
-import com.flux.store.ui.screens.dynamicHelperView.BannerInsideTitle
 import com.flux.store.ui.screens.dynamicHelperView.BannerOutsideTitle
+import com.flux.store.ui.screens.dynamicHelperView.SingleBannerViewInsideTitle
 import com.flux.store.ui.screens.dynamicHelperView.ViewPagerView
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.HomeViewModel
@@ -76,7 +79,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel, onNavigate: (route: String, payload: Any?, popUpToRoute: String?, inclusive: Boolean) -> Unit, navController: NavHostController, drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    onNavigate: (route: String, payload: Any?, popUpToRoute: String?, inclusive: Boolean) -> Unit,
+    navController: NavHostController,
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed)
+) {
     val scope = rememberCoroutineScope()
     BackHandler {
         navController.popBackStack()
@@ -309,17 +317,18 @@ fun DrawerItem(icon: Int, label: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun HomeContent(viewModel: HomeViewModel,
-                onNavigate: (String, Any?, String?, Boolean) -> Unit,
-                navController: NavHostController,
-                modifier: Modifier = Modifier,
-                drawerState: DrawerState) {
+fun HomeContent(
+    viewModel: HomeViewModel,
+    onNavigate: (String, Any?, String?, Boolean) -> Unit,
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    drawerState: DrawerState
+) {
 
     val context = LocalContext.current
     val categoryData = viewModel.categoryData.collectAsState().value
     val homeBannerData = viewModel.homeBannerData.collectAsState().value
     var selectedIndex by remember { mutableIntStateOf(0) }
-    var showHorizontally by remember { mutableStateOf(false) }
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val tag = "HomeScreen"
@@ -398,54 +407,192 @@ fun HomeContent(viewModel: HomeViewModel,
 
             for (pageData in homeBannerData) {
                 Log.d(tag, "Page Data: $pageData")
-                when(pageData.viewType){
-                    HomeScreenEnum.VIEW_PAGER_BANNER_VIEW.value ->{
+                when (pageData.viewType) {
+                    HomeScreenEnum.VIEW_PAGER_BANNER_VIEW.value -> {
                         item {
                             Log.d(tag, "VIEW_PAGER_BANNER_VIEW : ${pageData.data}")
                             ViewPagerView(pageData.data)
                         }
                     }
-                    HomeScreenEnum.SINGLE_BANNER_VIEW.value ->{
+
+                    HomeScreenEnum.SINGLE_BANNER_VIEW.value -> {
                         items(pageData.data) { index ->
                             Log.d(tag, "SINGLE_BANNER_VIEW : ${pageData.data}")
-                            BannerInsideTitle(index)
+                            SingleBannerViewInsideTitle(index)
                         }
                     }
-                    HomeScreenEnum.LARGE_TALL_BANNER_LIST_VIEW.value ->{
-                        if (showHorizontally) {
-                            val itemWidth = screenWidth * 0.86f  // tweak 0.80–0.90 to taste
-                            item {
-                                LazyRow {
-                                    items(pageData.data) { index ->
-                                        BannerOutsideTitle(index,
-                                            itemWidth = itemWidth,
-                                            imageHeight = 170.dp)
-                                    }
+
+                    HomeScreenEnum.HORIZONTAL_WIDE_BANNER_LIST_VIEW.value -> {
+                        Log.d(tag, "LARGE_WIDE_BANNER_LIST_VIEW : ${pageData.data}")
+                        val itemWidth = screenWidth * 0.86f  // tweak 0.80–0.90 to taste
+
+                        item {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth())
+                            {
+                                Text(
+                                    text = pageData.dataHeader.headerTitle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.wrapContentWidth().padding(start = 16.dp)
+                                )
+                                Text(
+                                    text = pageData.dataHeader.viewAll,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.wrapContentWidth().padding(end = 8.dp)
+                                )
+                            }
+                            LazyRow {
+                                items(pageData.data) { index ->
+                                    BannerOutsideTitle(index, itemWidth = itemWidth, imageHeight = 170.dp)
                                 }
                             }
-                        } else {
-                            showHorizontally = true
-                            val itemWidth = screenWidth * 1f  // tweak 0.80–0.90 to taste
-                            items(pageData.data) { index ->
-                                BannerOutsideTitle(index,
-                                    itemWidth = itemWidth,
-                                    imageHeight = 170.dp)
+                        }
+                    }
+
+                    HomeScreenEnum.VERTICAL_WIDE_BANNER_LIST_VIEW.value -> {
+                        item{
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth())
+                            {
+                                Text(
+                                    text = pageData.dataHeader.headerTitle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.wrapContentWidth().padding(start = 16.dp)
+                                )
+                                Text(
+                                    text = pageData.dataHeader.viewAll,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.wrapContentWidth().padding(end = 8.dp)
+                                )
+                            }
+                        }
+                        val itemWidth = screenWidth * 1f  // tweak 0.80–0.90 to taste
+                        items(pageData.data) { index ->
+                            BannerOutsideTitle(
+                                banner = index,
+                                itemWidth = itemWidth,
+                                imageHeight = 170.dp
+                            )
+                        }
+                    }
+
+                    HomeScreenEnum.HORIZONTAL_TALL_BANNER_LIST_VIEW.value -> {
+                        // Show ~2 cards per screen width while horizontally scrolling
+                        val itemWidth = twoUpCardWidth(screenWidth)
+                        item {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth())
+                            {
+                                Text(
+                                    text = pageData.dataHeader.headerTitle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.wrapContentWidth().padding(start = 16.dp)
+                                )
+                                Text(
+                                    text = pageData.dataHeader.viewAll,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.wrapContentWidth().padding(end = 8.dp)
+                                )
+                            }
+                            Spacer(Modifier.height(2.dp))
+                            LazyRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                                    6.dp
+                                )
+                            ) {
+                                items(pageData.data) { banner ->
+                                    BannerOutsideTitle(
+                                        banner = banner,
+                                        itemWidth = itemWidth,
+                                        imageHeight = 170.dp,
+                                        isTallBanner = true
+                                    )
+                                }
                             }
                         }
                     }
-                    HomeScreenEnum.SMALL_WIDE_BANNER_LIST_VIEW.value ->{
+
+                    HomeScreenEnum.VERTICAL_TALL_BANNER_LIST_VIEW.value -> {
                         item {
-                            Log.d(tag, "SMALL_WIDE_BANNER_LIST_VIEW : ${pageData.data}")
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth())
+                            {
+                                Text(
+                                    text = pageData.dataHeader.headerTitle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.wrapContentWidth().padding(start = 16.dp)
+                                )
+                                Text(
+                                    text = pageData.dataHeader.viewAll,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.wrapContentWidth().padding(end = 8.dp)
+                                )
+                            }
                         }
-                    }
-                    HomeScreenEnum.LARGE_WIDE_BANNER_LIST_VIEW.value ->{
-                        item {
-                            Log.d(tag, "LARGE_WIDE_BANNER_LIST_VIEW : ${pageData.data}")
-                        }
-                    }
-                    HomeScreenEnum.SMALL_TALL_BANNER_LIST_VIEW.value ->{
-                        item {
-                            Log.d(tag, "SMALL_TALL_BANNER_LIST_VIEW : ${pageData.data}")
+                        // Render two columns per row using chunked(2)
+//                        val itemWidth = twoUpCardWidth(screenWidth)
+                        val itemWidth = screenWidth / 2f
+                        val rows = pageData.data.chunked(2)
+                        items(rows) { rowBanners ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 4.dp, vertical = 4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(1.dp),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                // Left card
+                                BannerOutsideTitle(
+                                    banner = rowBanners[0],
+                                    itemWidth = itemWidth,
+                                    isTallBanner = true
+                                )
+                                // Right card (if present)
+                                if (rowBanners.size > 1) {
+                                    BannerOutsideTitle(
+                                        banner = rowBanners[1],
+                                        itemWidth = itemWidth,
+                                        isTallBanner = true
+                                    )
+                                } else {
+                                    // keep row balanced when odd count
+                                    Spacer(modifier = Modifier.width(itemWidth))
+                                }
+                            }
                         }
                     }
                 }
@@ -453,7 +600,6 @@ fun HomeContent(viewModel: HomeViewModel,
         }
     }
 }
-
 
 
 @SuppressLint("ViewModelConstructorInComposable")

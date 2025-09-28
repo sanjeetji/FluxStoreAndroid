@@ -26,12 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.flux.store.R
-import com.flux.store.model.response.DataHeader
 import com.flux.store.model.response.HomeBanner
 import com.flux.store.ui.theme.ComposeAppTheme
 
 @Composable
-fun BannerInsideTitle(banner: HomeBanner) {
+fun SingleBannerViewInsideTitle(banner: HomeBanner) {
 
     val inPreview = LocalInspectionMode.current
 
@@ -117,13 +116,12 @@ fun BannerInsideTitle(banner: HomeBanner) {
 @Composable
 private fun BannerInsideTitlePreview() {
     ComposeAppTheme(false) {
-        BannerInsideTitle(
+        SingleBannerViewInsideTitle(
             HomeBanner(
                 bannerId = 1,
                 bannerTitle = "Banner Title",
                 bannerDescription = "This text is for banner description",
                 bannerImage = "https://images.unsplash.com/photo-1583316174775-bd6dc0e9f298?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                DataHeader("New Collection", "View All")
             )
         )
     }

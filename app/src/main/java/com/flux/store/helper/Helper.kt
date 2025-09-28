@@ -12,6 +12,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -204,5 +206,12 @@ object Helper {
 
     enum class AppTheme {
         LIGHT, DARK, SYSTEM
+    }
+
+    fun twoUpCardWidth(screenWidth: Dp): Dp {
+        // Screen padding: 16dp each side; gutter between cards: 12dp
+        val horizontalPadding = 8.dp * 2
+        val gutter = 6.dp
+        return (screenWidth - horizontalPadding - gutter) / 2.5f
     }
 }
