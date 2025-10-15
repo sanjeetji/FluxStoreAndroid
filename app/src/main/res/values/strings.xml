@@ -54,4 +54,9 @@
     //Home Screen
     <string name="other">OTHER</string>
     <string name="category_name">Category Name</string>
+
+    //Explore Screen
+    <string name="hint_search">Search</string>
+    <string name="explore">Explore</string>
+
 </resources>

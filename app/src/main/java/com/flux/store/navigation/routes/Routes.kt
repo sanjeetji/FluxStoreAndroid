@@ -15,8 +15,8 @@ sealed interface HomeRoutes : Routes {
     }
 
     @Serializable
-    data object CategoryScreen : HomeRoutes {
-        override fun toRoute() = "category"
+    data object ExploreScreen : HomeRoutes {
+        override fun toRoute() = "explore"
     }
 
     @Serializable

@@ -2,8 +2,8 @@ package com.flux.store.navigation.bottomNav
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.ShoppingCart
 import com.flux.store.model.dto.BottomNavigation
 import com.flux.store.navigation.routes.HomeRoutes
@@ -17,9 +17,9 @@ object BottomNavigationItems {
             route = HomeRoutes.HomeScreen
         ),
         BottomNavigation(
-            label = Constants.CATEGORY_SCREEN,
-            icon = Icons.Rounded.Lock,
-            route = HomeRoutes.CategoryScreen
+            label = Constants.EXPLORE_SCREEN,
+            icon = Icons.Rounded.Search,
+            route = HomeRoutes.ExploreScreen
         ),
         BottomNavigation(
             label = Constants.CART_SCREEN,

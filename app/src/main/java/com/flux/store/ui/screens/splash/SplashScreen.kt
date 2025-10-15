@@ -144,8 +144,8 @@ fun handleGetStarted(
 fun SplashScreenView() {
 
     ComposeAppTheme(false) {
-        LocalBottomBarVisible provides remember { mutableStateOf(true) }
-        LocalIsDarkTheme provides remember { mutableStateOf(false) }
+//        LocalBottomBarVisible provides remember { mutableStateOf(true) }
+//        LocalIsDarkTheme provides remember { mutableStateOf(false) }
         val context = LocalContext.current
         SplashScreen(
             viewModel = SplashViewModel(AppStateManager(context)), // This may require default constructor or mock

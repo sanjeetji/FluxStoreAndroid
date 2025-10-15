@@ -274,8 +274,8 @@ fun handleShoppingNow(onNavigate: (target: String, payload: Any?, String?, Boole
 @Composable
 fun IntroScreenView() {
     ComposeAppTheme(false) {
-        LocalBottomBarVisible provides remember { mutableStateOf(true) }
-        LocalIsDarkTheme provides remember { mutableStateOf(false) }
+//        LocalBottomBarVisible provides remember { mutableStateOf(true) }
+//        LocalIsDarkTheme provides remember { mutableStateOf(false) }
         IntroScreen(
             IntroViewmodel(), {},
             onNavigate = { route, _, _, _ -> },

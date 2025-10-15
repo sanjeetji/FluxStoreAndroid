@@ -2,6 +2,7 @@ package com.flux.store.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.flux.store.model.response.Category
+import com.flux.store.model.response.ExploreData
 import com.flux.store.model.response.HomePageData
 import com.flux.store.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ class HomeViewModel @Inject constructor(val homeRepository: HomeRepository): Vie
 
     val categoryData : StateFlow<List<Category>> = homeRepository.categoryData
     val homeBannerData : StateFlow<List<HomePageData>> = homeRepository.homePageData
+    val explorePageData : StateFlow<List<ExploreData>> = homeRepository.exploreData
 
     fun setShowBottomBar(visible: Boolean) {
         _showBottomBar.value = visible
