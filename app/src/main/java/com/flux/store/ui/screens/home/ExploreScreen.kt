@@ -21,9 +21,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.ArrowForwardIos
@@ -32,8 +31,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -54,8 +51,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -65,6 +60,8 @@ import com.flux.store.R
 import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
+import com.flux.store.navigation.routes.HomeRoutes
+import com.flux.store.navigation.routes.ProductDetailsRoutes
 import com.flux.store.repository.HomeRepository
 import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.HomeViewModel
@@ -151,58 +148,30 @@ fun ExploreScreenContent(
                     .clip(RoundedCornerShape(20.dp))
                     .background(backgroundColor) // main background
                     .border(0.dp, Color.Transparent, RoundedCornerShape(20.dp))
-                    .padding(horizontal = 8.dp),
-                contentAlignment = Alignment.CenterStart
+                    .padding(horizontal = 8.dp)
+                    .clickable {
+                        onNavigate(
+                            ProductDetailsRoutes.ProductExploreScreen.toRoute(),
+                            null,
+                            HomeRoutes.ExploreScreen.toRoute(),
+                            false
+                        )
+                    }, contentAlignment = Alignment.CenterStart
             ) {
-                TextField(
-                    value = searchItem,
-                    onValueChange = { newValue -> searchItem = newValue },
-                    placeholder = {
-                        Text(
-                            text = tr(R.string.hint_search),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
-                        )
-                    },
-                    textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Search Icon",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        cursorColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Transparent),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Search,
-                        keyboardType = KeyboardType.Text
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            focusManager.clearFocus()
-                            Toast.makeText(
-                                context,
-                                "Searching for: $searchItem",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                Row {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search Icon",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
-                )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = tr(R.string.hint_search),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -216,8 +185,7 @@ fun ExploreScreenContent(
                     .width(60.dp)
                     .clickable {
                         Toast.makeText(context, "Filter clicked", Toast.LENGTH_SHORT).show()
-                    },
-                contentAlignment = Alignment.Center
+                    }, contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_filter),
@@ -231,27 +199,24 @@ fun ExploreScreenContent(
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        // Banners
-
-        // Banners - Scrollable LazyColumn with expandable items
-        // Banners - Scrollable LazyColumn with expandable items
         LazyColumn {
             items(explorePageData) { pageData ->
                 val currentIndex = explorePageData.indexOf(pageData)
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     // Banner Image with clickable for expand/collapse
-                    val imageModifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 12.dp)
-                        .fillMaxWidth()
-                        .height(170.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable {
-                            // Toggle expansion: if already expanded, collapse; else expand and collapse others
-                            expandedIndex = if (expandedIndex == currentIndex) -1 else currentIndex
-                        }
+                    val imageModifier =
+                        Modifier
+                            .padding(start = 16.dp, end = 16.dp, top = 12.dp)
+                            .fillMaxWidth()
+                            .height(170.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable {
+                                // Toggle expansion: if already expanded, collapse; else expand and collapse others
+                                expandedIndex =
+                                    if (expandedIndex == currentIndex) -1 else currentIndex
+                            }
 
                     if (inPreview || pageData.drawableImage is Int) {
                         // PREVIEW or a local drawable resource → use Image + painterResource
@@ -277,54 +242,77 @@ fun ExploreScreenContent(
                     // Expandable Inner Items (Categories)
                     if (expandedIndex == currentIndex) {
                         pageData.bannerCategory.forEach { categoryData ->
-                            Column {
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                            Column(
+                            ) {
+                                Spacer(
                                     modifier = Modifier
-                                        .padding(top = 8.dp, start = 16.dp, end = 16.dp)
                                         .fillMaxWidth()
-                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                        .height(5.dp)
+                                )
+                                Box(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .clip(shape = CircleShape)
                                         .clickable {
                                             // Navigate to category detail screen
-                                            Toast.makeText(
-                                                context,
-                                                categoryData.categoryName,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-//                                            onNavigate(
-//                                                targetRoute, null, SplashRoutes.SplashScreen.toRoute(), true
-//                                            )
-                                        }
-                                ) {
-                                    Text(
-                                        text = categoryData.categoryName,
-                                        color = MaterialTheme.colorScheme.tertiary,
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
+//                                            Toast.makeText(context, categoryData.categoryName, Toast.LENGTH_SHORT).show()
+                                            onNavigate(
+                                                ProductDetailsRoutes.ProductListScreen.toRoute(),
+                                                categoryData,
+                                                HomeRoutes.ExploreScreen.toRoute(),
+                                                false
+                                            )
+                                        }) {
                                     Row(
                                         horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier
-                                            .wrapContentWidth()
+                                            .fillMaxWidth()
+                                            .padding(
+                                                start = 18.dp,
+                                                end = 18.dp,
+                                                top = 18.dp,
+                                                bottom = 1.dp
+                                            )
                                     ) {
                                         Text(
-                                            text = categoryData.totalItem.toString(),
+                                            text = categoryData.categoryName,
                                             color = MaterialTheme.colorScheme.tertiary,
                                             style = MaterialTheme.typography.bodySmall
                                         )
-                                        Icon(
-                                            modifier = Modifier.size(16.dp),
-                                            imageVector = Icons.Rounded.ArrowForwardIos,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.tertiary
-                                        )
+                                        Row(
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.wrapContentWidth()
+                                        ) {
+                                            Text(
+                                                text = categoryData.totalItem.toString(),
+                                                color = MaterialTheme.colorScheme.tertiary,
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                            Icon(
+                                                modifier = Modifier.size(16.dp),
+                                                imageVector = Icons.Rounded.ArrowForwardIos,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.tertiary
+                                            )
+                                        }
                                     }
                                 }
                                 Spacer(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .height(5.dp)
+                                )
+                                Spacer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .height(1.dp)
                                         .background(color = MaterialTheme.colorScheme.outline)
+                                )
+                                Spacer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(5.dp)
                                 )
                             }
                         }

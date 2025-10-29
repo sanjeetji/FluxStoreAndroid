@@ -1,0 +1,631 @@
+package com.flux.store.repository
+
+import com.flux.store.R
+import com.flux.store.helper.HomeScreenEnum
+import com.flux.store.model.response.BannerCategory
+import com.flux.store.model.response.BannerData
+import com.flux.store.model.response.Category
+import com.flux.store.model.response.DataHeader
+import com.flux.store.model.response.ExploreData
+import com.flux.store.model.response.HomeBanner
+import com.flux.store.model.response.HomePageData
+import com.flux.store.model.response.ProductDetailsResponse
+import com.flux.store.model.response.RatingData
+import com.flux.store.model.response.RecentSearch
+import com.flux.store.model.response.ReviewList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class ProductRepository @Inject constructor() {
+
+    private val _categoryData = MutableStateFlow<List<Category>>(emptyList())
+    val categoryData: StateFlow<List<Category>> = _categoryData
+
+    private val _homePageData = MutableStateFlow<List<HomePageData>>(emptyList())
+    val homePageData: StateFlow<List<HomePageData>> = _homePageData
+
+    private val _exploreData = MutableStateFlow<List<ExploreData>>(emptyList())
+    val exploreData: StateFlow<List<ExploreData>> = _exploreData
+
+    private val _recentSearchData = MutableStateFlow<List<RecentSearch>>(emptyList())
+    val recentSearchData: StateFlow<List<RecentSearch>> = _recentSearchData
+
+    private val _weekTrending = MutableStateFlow<List<HomeBanner>>(emptyList())
+    val weekTrending: StateFlow<List<HomeBanner>> = _weekTrending
+
+    private val _monthTrending = MutableStateFlow<List<HomeBanner>>(emptyList())
+    val monthTrending: StateFlow<List<HomeBanner>> = _monthTrending
+
+    private val _productDetailsResponse = MutableStateFlow<ProductDetailsResponse?>(null)
+    val productDetailsResponse: StateFlow<ProductDetailsResponse?> = _productDetailsResponse
+
+    init {
+        _categoryData.value = listOf(
+            Category(1, "Women",     R.drawable.ic_female),
+            Category(2, "Men",       R.drawable.ic_male),
+            Category(3, "Accessories", R.drawable.ic_accessories),
+            Category(4, "Beauty",    R.drawable.ic_beauty),
+            Category(5, "Shoes",     R.drawable.ic_shoes),
+        )
+
+        _homePageData.value = listOf(
+            HomePageData(
+                HomeScreenEnum.VIEW_PAGER_BANNER_VIEW.value,
+                listOf(
+                    HomeBanner(1, "Autumn Collection 2023",null,"https://images.unsplash.com/photo-1583316174775-bd6dc0e9f298?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", ),
+                    HomeBanner(2, "Autumn Collection 2024",null,"https://images.unsplash.com/photo-1685875018148-6ac6d41b7c4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",),
+                    HomeBanner(3, "Autumn Collection 2025",null,"https://images.unsplash.com/photo-1560859259-fcf2b952aed8?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",),
+                    ),
+                DataHeader("New Collection","View All"),
+            ),
+            HomePageData(
+                HomeScreenEnum.SINGLE_BANNER_VIEW.value,
+                listOf(
+                    HomeBanner(4, "Free Shipping for Prepaid Order In India.","Red Color Trendy Georgette Floral Print Women's Gown","", ),
+//                    HomeBanner(5, "Free Shipping for Prepaid Order In India.","Red Color Trendy Georgette Floral Print Women's Gown","https://clothsvilla.com/cdn/shop/products/RedColorTrendyGeorgetteFloralPrintWomen_sGown_1_1024x1024.jpg?v=1676299608",),
+//                    HomeBanner(6, "Traditional Pakistani Eid Dresses","Pakistani Eid Clothing Collection 2025 for Women at Filhaal UK","https://filhaal.co.uk/cdn/shop/articles/Pakistani_Eid_Clothing_Collection_002e6c3a-8959-45ba-beff-e6b4061a51bc.png?v=1742959117&width=3000",),
+                ),
+                DataHeader("New Collection","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.HORIZONTAL_WIDE_BANNER_LIST_VIEW.value,
+                listOf(
+                    HomeBanner(7, "Finding the perfect stylish dress.","11 of the best Amazon dresses for women over 40, according to an expert — all under $100","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+                    HomeBanner(8, "Current Festive' dresses under $250","It might sound too good to be true, but festivals are officially back this year 2025","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+                    HomeBanner(9, "Top States for Selling Women’s Dresses in India","Let’s explore the top states for fabrics famous women dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+                    ),
+                DataHeader("Feature Products","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.VERTICAL_TALL_BANNER_LIST_VIEW.value,
+                listOf(
+                    HomeBanner(17, "Price $200.","Stunning clothes.","https://st3.depositphotos.com/1177973/13134/i/1600/depositphotos_131343702-stock-photo-different-female-clothes.jpg",),
+                    HomeBanner(18, "Price $270.","Amazon dresses for women.","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+                    HomeBanner(19, "Price $250.","Officially beautiful dress.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+                    HomeBanner(20, "Price $300.","India women’s dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+                ),
+                DataHeader("New Collection","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.SINGLE_BANNER_VIEW.value,
+                listOf(
+//                    HomeBanner(4, "Free Shipping for Prepaid Order In India.","Red Color Trendy Georgette Floral Print Women's Gown","", DataHeader("New Collection","View All")),
+                    HomeBanner(5, "Free Shipping for Prepaid Order In India.","Red Color Trendy Georgette Floral Print Women's Gown","https://clothsvilla.com/cdn/shop/products/RedColorTrendyGeorgetteFloralPrintWomen_sGown_1_1024x1024.jpg?v=1676299608", ),
+//                    HomeBanner(6, "Traditional Pakistani Eid Dresses","Pakistani Eid Clothing Collection 2025 for Women at Filhaal UK","https://filhaal.co.uk/cdn/shop/articles/Pakistani_Eid_Clothing_Collection_002e6c3a-8959-45ba-beff-e6b4061a51bc.png?v=1742959117&width=3000"),
+                ),
+                DataHeader("Beautiful girl dresses","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.HORIZONTAL_TALL_BANNER_LIST_VIEW.value,
+                listOf(
+                    HomeBanner(14, "Price $140","Perfect dresses.","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+                    HomeBanner(15, "Price $150","Festivals's dresses.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+                    HomeBanner(16, "Price $160","Famous fabrics dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804", ),
+                ),
+                DataHeader("Mature women dresses","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.VERTICAL_WIDE_BANNER_LIST_VIEW.value,
+                listOf(
+                    HomeBanner(10, "5 Clothing Store Layout Must-Haves.","Maximize engagement and boost sales using these creative design elements","https://www.resonai.com/hs-fs/hubfs/Google%20Drive%20Integration/5%20Clothing%20Store%20Layout%20Must%20Haves%20for%202022.png?width=1248&height=832&name=5%20Clothing%20Store%20Layout%20Must%20Haves%20for%202022.png", ),
+                    HomeBanner(11, "The Ultimate Guide for Retail.","You need to know to create a store plan that will meet the most demanding KPIs","https://www.resonai.com/hs-fs/hubfs/Google%20Drive%20Integration/Store%20Planning%20The%20Ultimate%20Guide%20for%20Retail.jpeg?width=1248&height=832&name=Store%20Planning%20The%20Ultimate%20Guide%20for%20Retail.jpeg", ),
+                    HomeBanner(12, "The best fashion shops in Bangkok.","From quaint boutiques to high-end designer stores, fashion therapy is never far from reach in Bangkok.","https://media.timeout.com/images/103260890/1920/1440/image.webp", ),
+                    HomeBanner(13, "Pre-Loved Fashion Is The Hottest Craze.","We are in the year of pre-loved fashion at Current Boutique!.","https://cdn.shopify.com/s/files/1/0269/9644/1191/files/Easy-Hacks-to-Make-Your-Clothing-Last-Longer-2048x1365.jpg",),
+                ),
+                DataHeader("Fitness clothing dresses","View All")
+            ),
+            HomePageData(
+                HomeScreenEnum.HORIZONTAL_WIDE_BANNER_LIST_VIEW.value,
+                listOf(
+                    HomeBanner(7, "Finding the perfect dress can be tricky, especially if you want something stylish.","11 of the best Amazon dresses for women over 40, according to an expert — all under $100","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+                    HomeBanner(8, "Festive Wear Guide- What to Wear to A Festival This Year","It might sound too good to be true, but festivals are officially back this year 2021. And by this, we mean that things are getting better out there, and we can finally start celebrating.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=",),
+                    HomeBanner(9, "Top States for Selling Women’s Dresses in India","Let’s explore the top states in India where women’s dresses are sold the most, along with some insights on the types of fabrics famous from these regions.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+                ),
+                DataHeader("Winter dresses collection","View All")
+            ),
+        )
+
+        _exploreData.value = listOf(
+            ExploreData(R.drawable.img_clothing, "", listOf(
+                    BannerCategory(1, "Jacket", 128, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(2, "Skirts", 40, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(3, "Dresses", 36, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(4, "Sweaters", 24, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(4, "Jeans", 14, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(4, "T-Shirts", 12, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                    BannerCategory(4, "Pants", 9, listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                )
+            ),
+            ExploreData(R.drawable.img_accessories, "", listOf(
+                BannerCategory(1, "Hat", 128,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(2, "Belt", 40,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(3, "Eyeglasses", 36,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Handbag", 24,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Earrings", 14,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Bracelets", 12,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Watches", 9,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Purse(Wallets)", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                BannerCategory(4, "Hair accessories", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+            )
+            ),
+            ExploreData(R.drawable.img_shoes, "", listOf(
+                BannerCategory(1, "Loafers", 128,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(2, "Boots", 40,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(3, "Ballet Flats", 36,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Sneakers", 24,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Heels", 14,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Cowboy Boots", 12,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Oxford", 9,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Platform Shoes", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                BannerCategory(4, "Wellingtons", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                BannerCategory(4, "Block Heels", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                BannerCategory(4, "Knee-high Boots", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+                BannerCategory(4, "Kitten Heels", 9,
+                    listOf(
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                        BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                    )),
+            )
+            ),
+            ExploreData(R.drawable.img_collection, "", listOf(
+                BannerCategory(1, "Autumn Collection 2020-2025", 128,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(2, "Autumn Collection 2015-2020", 40,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(3, "Autumn Collection 2010-2015", 36,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Autumn Collection 2000-2010", 24,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Autumn Collection 1990-2000", 14,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Autumn Collection 1985", 12,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+                BannerCategory(4, "Grand Autumn Collection 1980", 9,
+                    listOf(
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress One",120.45,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Two",10.45,5.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Three",134.90,100.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Four",90.23,45.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_1,"Girl Dress Five",150.12,120.00,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_2,"Girl Dress Six",80.00,67.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_3,"Girl Dress Seven",67.78,45.90,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_4,"Girl Dress Eight",230.67,140.54,45,3.5,false),
+                    BannerData(1,R.drawable.img_girl_5,"Girl Dress Nine",789.00,546.89,45,3.5,false),
+                )),
+            )
+            ),
+        )
+
+        _recentSearchData.value = listOf(
+            RecentSearch(1,"Sunglasses"),
+            RecentSearch(2,"Sweater"),
+            RecentSearch(3,"Hoodie"),
+            RecentSearch(4,"Jacket"),
+        )
+
+        _weekTrending.value = listOf(
+            HomeBanner(17, "Price $200.","Stunning clothes.","https://st3.depositphotos.com/1177973/13134/i/1600/depositphotos_131343702-stock-photo-different-female-clothes.jpg",),
+            HomeBanner(18, "Price $270.","Amazon dresses for women.","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+            HomeBanner(19, "Price $250.","Officially beautiful dress.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+            HomeBanner(20, "Price $300.","India women’s dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+        )
+
+        _monthTrending.value = listOf(
+            HomeBanner(17, "Price $200.","Stunning clothes.","https://st3.depositphotos.com/1177973/13134/i/1600/depositphotos_131343702-stock-photo-different-female-clothes.jpg",),
+            HomeBanner(18, "Price $270.","Amazon dresses for women.","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+            HomeBanner(19, "Price $250.","Officially beautiful dress.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+            HomeBanner(20, "Price $300.","India women’s dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+            HomeBanner(17, "Price $200.","Stunning clothes.","https://st3.depositphotos.com/1177973/13134/i/1600/depositphotos_131343702-stock-photo-different-female-clothes.jpg",),
+            HomeBanner(18, "Price $270.","Amazon dresses for women.","https://images.stockcake.com/public/f/4/9/f4943121-b1c4-401c-a7d9-a7c35545988f_large/colorful-wardrobe-collection-stockcake.jpg", ),
+            HomeBanner(19, "Price $250.","Officially beautiful dress.","https://media.istockphoto.com/id/935032524/photo/women-summer-dresses-on-display-at-camden-market.jpg?s=1024x1024&w=is&k=20&c=tJOs8y-0XOCDy5Mtzsj4FRiPv8EGe1cUPbXp4UuSEuY=", ),
+            HomeBanner(20, "Price $300.","India women’s dresses.","https://thevishnu.in/cdn/shop/articles/blog1_vishnu_1600x.png?v=1718008804",),
+        )
+
+
+        _productDetailsResponse.value = ProductDetailsResponse(
+            1,"Sportwear Set",true,
+            listOf(
+                R.drawable.img_prod_1,
+                R.drawable.img_prod_2,
+                R.drawable.img_prod_3,
+                ),
+//            listOf(
+//                "https://wforwoman.com/cdn/shop/files/SP11494-401086.jpg?v=1758861989&width=1500",
+//                "https://wforwoman.com/cdn/shop/files/SP11506-401100_2.jpg?v=1758777844&width=1500",
+//                "https://wforwoman.com/cdn/shop/files/24AUSP11990-124426_1_f6b1c6aa-0cba-44a0-b043-30ced7f9c986.jpg?v=1739786248&width=1500"
+//                ),
+            435.9,400.50,45, averageRating = 3.5,listOf("#faafaf","#e2f0b1","#219ced","#e83aa5","#f7394c"),
+            listOf("S","M","L","XL","XXL"),"Sportswear is no longer under culture, it is no longer indie or cobbled together as it once was. Sport is fashion today. The top is oversized in fit and style, may need to size down.",
+            RatingData(3.5,34, mapOf(
+                Pair(1,20),
+                Pair(2,30),
+                Pair(3,30),
+                Pair(4,30),
+                Pair(5,30),
+                Pair(6,30),
+                Pair(7,30),
+                Pair(8,50),
+                Pair(9,80),
+                Pair(10,80),
+                Pair(11,80),
+                Pair(12,80),
+                Pair(13,80),
+                Pair(14,80),
+                Pair(15,100),) as HashMap<Int, Int>),listOf(
+                ReviewList(1,"Kamal","","I love it.  Awesome customer service!! Helped me out with adding an additional item to my order. Thanks again!","",4.5),
+                ReviewList(1,"Kamal","","I love it.  Awesome customer service!! Helped me out with adding an additional item to my order. Thanks again!","",4.5),
+                ReviewList(1,"Kamal","","I love it.  Awesome customer service!! Helped me out with adding an additional item to my order. Thanks again!","",4.5),
+                ReviewList(1,"Kamal","","I love it.  Awesome customer service!! Helped me out with adding an additional item to my order. Thanks again!","",4.5),
+                ReviewList(1,"Kamal","","I love it.  Awesome customer service!! Helped me out with adding an additional item to my order. Thanks again!","",4.5),
+                ),listOf(
+                BannerData(1,R.drawable.img_girl_5,"Rise Crop Hoodie",345.6,200.5,450,65.0,false),
+                BannerData(1,R.drawable.img_girl_5,"Rise Crop Hoodie",345.6,200.5,450,65.0,false),
+                BannerData(1,R.drawable.img_girl_5,"Rise Crop Hoodie",345.6,200.5,450,65.0,false),
+                BannerData(1,R.drawable.img_girl_5,"Rise Crop Hoodie",345.6,200.5,450,65.0,false),
+                BannerData(1,R.drawable.img_girl_5,"Rise Crop Hoodie",345.6,200.5,450,65.0,false),
+                )
+        )
+
+    }
+
+}

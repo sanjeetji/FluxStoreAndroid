@@ -81,7 +81,7 @@ fun BannerOutsideTitle(
                 text = it,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.outlineVariant,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.labelSmall.copy(
                     lineBreak = LineBreak.Paragraph,
                     hyphens = Hyphens.Auto

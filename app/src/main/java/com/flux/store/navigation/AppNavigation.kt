@@ -54,6 +54,7 @@ fun AppNavigation(
             splashNavigation(::navigateWithPayload, navController)
             loginNavigation(::navigateWithPayload, navController)
             homeNavigation(::navigateWithPayload, navController,drawerState)
+            productDetailsNavigation(::navigateWithPayload,navController)
         }
     }
 }

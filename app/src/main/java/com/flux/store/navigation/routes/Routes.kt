@@ -8,6 +8,22 @@ sealed interface Routes {
 }
 
 @Serializable
+sealed interface ProductDetailsRoutes : Routes {
+    @Serializable
+    data object ProductListScreen : ProductDetailsRoutes {
+        override fun toRoute() = "productListScreen"
+    }
+    @Serializable
+    data object ProductExploreScreen : ProductDetailsRoutes {
+        override fun toRoute() = "productExploreScreen"
+    }
+    @Serializable
+    data object ProductDetailScreen : ProductDetailsRoutes {
+        override fun toRoute() = "productDetailScreen"
+    }
+}
+
+@Serializable
 sealed interface HomeRoutes : Routes {
     @Serializable
     data object HomeScreen : HomeRoutes {
@@ -62,7 +78,6 @@ sealed interface LoginRoutes : Routes {
         override fun toRoute() = "createNewPasswordScreen"
     }
 }
-
 
 @Serializable
 sealed interface SplashRoutes : Routes {
