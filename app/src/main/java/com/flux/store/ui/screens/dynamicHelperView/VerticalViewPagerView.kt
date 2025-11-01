@@ -26,8 +26,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,14 +40,13 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.flux.store.R
-import com.flux.store.ui.theme.ComposeAppTheme
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.dataForBannerInSideTitle
 import kotlinx.coroutines.delay
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -149,7 +150,8 @@ fun VerticalViewPagerView(
                     .clickable {
                         isFavourite = !isFavourite
                         onFavClick(isFavourite)
-                        val msg = if (isFavourite) "Added to favourites" else "Removed from favourites"
+                        val msg =
+                            if (isFavourite) "Added to favourites" else "Removed from favourites"
                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     },
                 contentAlignment = Alignment.Center
@@ -193,18 +195,28 @@ fun VerticalViewPagerView(
     }
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true, name = "Banner – Light")
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES,
+    name = "Banner – Dark"
+)
 @Composable
 private fun VerticalViewPagerViewPreview() {
-    ComposeAppTheme(false) {
-        VerticalViewPagerView(
-            viewPagerData = listOf(
-                R.drawable.img_prod_1,
-                R.drawable.img_prod_2,
-                R.drawable.img_prod_3,
-            ),
-            onBackClick = { Log.d("ProductDetails", "Back button clicked") },
-            onFavClick = { isFav -> Log.d("ProductDetails", "Favorite status: $isFav") }
-        )
-    }
+    FakePreview(
+        fakeData = dataForBannerInSideTitle,
+        useUiState = false,          // direct data, no ViewModel
+        onSuccess = { banner ->
+            VerticalViewPagerView(
+                viewPagerData = listOf(
+                    R.drawable.img_prod_1,
+                    R.drawable.img_prod_2,
+                    R.drawable.img_prod_3,
+                ),
+                onBackClick = { Log.d("ProductDetails", "Back button clicked") },
+                onFavClick = { isFav -> Log.d("ProductDetails", "Favorite status: $isFav") }
+            )
+        }
+    )
 }

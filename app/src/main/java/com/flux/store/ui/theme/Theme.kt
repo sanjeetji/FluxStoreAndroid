@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 
-private val LightLightColorScheme = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary =                    LightThemePrimaryColor,                    //0xFFFFFFFF
     onPrimary =                  LightThemeOnPrimaryColor,                //0xFF000000
     secondary =                  LightThemeSecondaryColor,                //0xFFFAFAFA
@@ -59,8 +59,7 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun ComposeAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,// Disable dynamic colors to use custom Color.kt
+    dynamicColor: Boolean = false,// keep off – we use custom palette
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -69,19 +68,20 @@ fun ComposeAppTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
-        else -> LightLightColorScheme
+        else -> LightColorScheme
     }
 
+    // ---- System bar icon colors (light/dark) ----
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            // Set transparent system bars (defined in theme, but ensure compatibility)
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             val insetsController = WindowCompat.getInsetsController(window, view)
-            // Set light/dark appearance for status and navigation bars
-            insetsController.isAppearanceLightStatusBars = !darkTheme
-            insetsController.isAppearanceLightNavigationBars = !darkTheme
+
+            // Light icons on dark background → false, dark icons on light → true
+            val lightIcons = !darkTheme
+            insetsController.isAppearanceLightStatusBars = lightIcons
+            insetsController.isAppearanceLightNavigationBars = lightIcons
         }
     }
 

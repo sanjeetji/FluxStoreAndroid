@@ -4,7 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,13 +36,14 @@ fun BottomBar(navController: NavHostController) {
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primary,
-        tonalElevation = 0.dp,
         modifier = Modifier
+            .height(72.dp)
+            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
             .background(MaterialTheme.colorScheme.primary)
             .border(1.dp,color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(40.dp))
-            .height(72.dp)
             .clip(RoundedCornerShape(40.dp)),
+        containerColor = MaterialTheme.colorScheme.primary,
+        tonalElevation = 0.dp,
         ) {
         BottomNavigationItems.bottomNavigation.forEach { item ->
             val route = item.route.toRoute()

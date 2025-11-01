@@ -4,14 +4,13 @@ import com.flux.store.model.response.BaseResponse
 import com.flux.store.network.NetworkResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 
 class FakeRepository {
 
-    /**
-     * Simulates a fake network call returning BaseResponse<T>.
-     * Use it for previews or dummy UI states.
-     */
+    /** Simulate a successful network call */
     fun <T> getFakeData(
         fakeData: T,
         flag: Int = 200,
@@ -19,16 +18,18 @@ class FakeRepository {
         delayMs: Long = 800L
     ): Flow<NetworkResult<BaseResponse<T>>> = flow {
         emit(NetworkResult.Loading)
-        delay(delayMs) // simulate network delay
+        delay(delayMs)
         emit(NetworkResult.Success(BaseResponse(flag, message, fakeData)))
-    }
+    }.onStart { emit(NetworkResult.Loading) }
+        .catch { emit(NetworkResult.Error(it.message ?: "Something went wrong")) }
 
-    /**
-     * Simulates an error state.
-     */
-    fun <T> getFakeError(message: String = "Something went wrong"): Flow<NetworkResult<BaseResponse<T>>> = flow {
+    /** Simulate an error */
+    fun <T> getFakeError(
+        message: String = "Something went wrong",
+        delayMs: Long = 600L
+    ): Flow<NetworkResult<BaseResponse<T>>> = flow {
         emit(NetworkResult.Loading)
-        delay(600)
+        delay(delayMs)
         emit(NetworkResult.Error(message))
-    }
+    }.onStart { emit(NetworkResult.Loading) }
 }

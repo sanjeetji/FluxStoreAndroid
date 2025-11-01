@@ -1,6 +1,5 @@
 package com.flux.store.ui.screens.productDetail
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -35,19 +34,15 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
-import com.flux.store.fakeData.fakeNetwork.FakeViewModel
+import com.flux.store.fakeData.fakeNetwork.FakePreview
 import com.flux.store.fakeData.fakeNetwork.productDetailsData
-import com.flux.store.helper.LocalBottomBarVisible
-import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.model.response.BaseResponse
 import com.flux.store.model.response.ProductDetailsResponse
-import com.flux.store.repository.ProductRepository
 import com.flux.store.ui.screens.composeHelper.ErrorView
 import com.flux.store.ui.screens.composeHelper.LoadingView
 import com.flux.store.ui.screens.dynamicHelperView.StarRatingBar
 import com.flux.store.ui.screens.dynamicHelperView.VerticalViewPagerView
-import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.ProductListViewModel
 import com.flux.store.viewmodel.UiState
 import kotlinx.coroutines.launch
@@ -86,20 +81,6 @@ fun ProductDetailsScreen(
         }
     }
 
-
-   /* val productDetails = viewModel.productDetailsResponse.collectAsState().value
-    if (productDetails == null) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("Loading product details...", color = MaterialTheme.colorScheme.onBackground)
-        }
-        return
-    }*/
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,7 +98,7 @@ fun ProductDetailsContent(productDetails: ProductDetailsResponse, navController:
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val viewPagerHeight = 450.dp
-    val peekHeight = (screenHeight - viewPagerHeight).coerceAtLeast(56.dp)
+    val peekHeight = (screenHeight - viewPagerHeight).coerceAtLeast(50.dp)
 
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
@@ -175,7 +156,8 @@ fun ProductDetailsContent(productDetails: ProductDetailsResponse, navController:
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.outline)
+            .padding(top = 32.dp)
     ) {
 
         // 2️⃣ TopBar fixed overlay (fades in after 90%)
@@ -234,9 +216,6 @@ fun ProductDetailsContent(productDetails: ProductDetailsResponse, navController:
                         .padding(horizontal = 12.dp, vertical = 16.dp)
                 ) {
                     item {
-                        // Optional: keep a tiny spacer so content doesn't feel cramped at image edge
-                        Spacer(Modifier.height(8.dp))
-
                         // Product header
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -498,31 +477,15 @@ fun KeyValueItem(key: Int, value: Int) {
     }
 }
 
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true, showSystemUi = false)
+@Preview(showBackground = true, showSystemUi = true, name = "Product Details – Light")
+@Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "Product Details – Dark")
 @Composable
 private fun ProductDetailsScreenPreview() {
-    ComposeAppTheme(false) {
-        CompositionLocalProvider(
-            LocalBottomBarVisible provides remember { mutableStateOf(true) },
-            LocalIsDarkTheme provides remember { mutableStateOf(false) }
-        ) {
-            val showError = false
-            val fakeVM = remember { FakeViewModel<ProductDetailsResponse>() }
-            if (showError) {
-                fakeVM.previewError("Network unreachable")
-            } else {
-                fakeVM.previewSuccess(productDetailsData)
-            }
-            val state by fakeVM.uiState.collectAsState()
-            when (state) {
-                UiState.Loading -> LoadingView()
-                is UiState.Error -> ErrorView(message = (state as UiState.Error).message) {}
-                is UiState.Success -> {
-                    val product = (state as UiState.Success<BaseResponse<ProductDetailsResponse>>).data.data
-                    ProductDetailsContent(product!!, rememberNavController())
-                }
-            }
+    FakePreview(
+        fakeData = productDetailsData,
+        useUiState = false,          // direct data, no ViewModel
+        onSuccess = { banner ->
+            ProductDetailsContent(banner,rememberNavController())
         }
-    }
+    )
 }

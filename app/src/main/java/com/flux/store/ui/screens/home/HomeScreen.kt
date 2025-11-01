@@ -1,6 +1,5 @@
 package com.flux.store.ui.screens.home
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,6 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.exploreItemFakeData
+import com.flux.store.fakeData.fakeNetwork.homeCategoryFakeData
+import com.flux.store.fakeData.fakeNetwork.homePageFakeData
 import com.flux.store.helper.Helper.twoUpCardWidth
 import com.flux.store.helper.HomeScreenEnum
 import com.flux.store.helper.LocalBottomBarVisible
@@ -59,8 +61,8 @@ import com.flux.store.repository.HomeRepository
 import com.flux.store.ui.screens.dynamicHelperView.BannerOutsideTitle
 import com.flux.store.ui.screens.dynamicHelperView.SingleBannerViewInsideTitle
 import com.flux.store.ui.screens.dynamicHelperView.ViewPagerView
-import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.HomeViewModel
+import kotlin.collections.chunked
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,27 +91,25 @@ fun HomeScreen(
             },
             onNavigate = onNavigate,
             drawerState = drawerState
-        ) { modifier ->
-            HomeContent(
+        ) { contentModifier ->
+            HomeScreenContentView(
                 viewModel = viewModel,
                 onNavigate = onNavigate,
                 navController = navController,
-                modifier = modifier,
+                modifier = contentModifier,
                 drawerState = drawerState
             )
         }
     }
 }
 
-@Composable
-fun HomeContent(
-    viewModel: HomeViewModel,
-    onNavigate: (String, Any?, String?, Boolean) -> Unit,
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-    drawerState: DrawerState
-) {
 
+@Composable
+fun HomeScreenContentView(viewModel: HomeViewModel,
+                          onNavigate: (String, Any?, String?, Boolean) -> Unit,
+                          navController: NavHostController,
+                          modifier: Modifier = Modifier,
+                          drawerState: DrawerState) {
     val context = LocalContext.current
     val categoryData = viewModel.categoryData.collectAsState().value
     val homeBannerData = viewModel.homeBannerData.collectAsState().value
@@ -117,20 +117,13 @@ fun HomeContent(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val tag = "HomeScreen"
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary)
-    ) {
-
-        Spacer(modifier = Modifier.height(46.dp))
-
+    Column(modifier = modifier.background(color = MaterialTheme.colorScheme.primary))
+    {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(25.dp))
-                .padding(start = 8.dp, end = 16.dp)
+                .padding(start = 4.dp, end = 16.dp)
                 .background(MaterialTheme.colorScheme.primary),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -190,12 +183,12 @@ fun HomeContent(
                 }
             }
         }
-
         LazyColumn {
 
             for (pageData in homeBannerData) {
                 Log.d(tag, "Page Data: $pageData")
                 when (pageData.viewType) {
+
                     HomeScreenEnum.VIEW_PAGER_BANNER_VIEW.value -> {
                         item {
                             Log.d(tag, "VIEW_PAGER_BANNER_VIEW : ${pageData.data}")
@@ -412,24 +405,40 @@ fun HomeContent(
     }
 }
 
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Home – Light")
+@Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "Home – Dark")
 @Composable
 private fun HomeScreenPreview() {
-    ComposeAppTheme(false) {
-        CompositionLocalProvider(
-            LocalBottomBarVisible provides remember { mutableStateOf(true) },
-            LocalIsDarkTheme provides remember { mutableStateOf(false) },
-        ) {
-            val previewVM = remember { HomeViewModel(HomeRepository()) }
-            HomeScreen(
-                viewModel = previewVM,
-                onNavigate = { route, _, _, _ -> },
-                navController = rememberNavController(),
-                drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-                onMenuClick = {}
-            )
+    FakePreview(
+        fakeData = Unit,
+        useUiState = false,
+        onSuccess = {
+            // ---- Fake ViewModel with instant data ----
+            val fakeVM = remember {
+                object : HomeViewModel(HomeRepository()) {
+                    init {
+                        previewInjectData(
+                            categories = homeCategoryFakeData,
+                            pageData = homePageFakeData,
+                            exploreData = exploreItemFakeData,
+                            bottomBar = true
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalBottomBarVisible provides remember { mutableStateOf(true) },
+                LocalIsDarkTheme provides remember { mutableStateOf(false) }
+            ) {
+                HomeScreen(
+                    viewModel = fakeVM,
+                    onNavigate = { _, _, _, _ -> },
+                    navController = rememberNavController(),
+                    drawerState = rememberDrawerState(DrawerValue.Closed),
+                    onMenuClick = {}
+                )
+            }
         }
-    }
+    )
 }

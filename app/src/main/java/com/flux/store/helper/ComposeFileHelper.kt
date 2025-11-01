@@ -1,9 +1,15 @@
 package com.flux.store.helper
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 
 object ComposeFileHelper {
@@ -24,5 +30,9 @@ object ComposeFileHelper {
             focusedLeadingIconColor     = cs.primary
         )
     }
+
+    @Composable
+    fun Modifier.edgeToEdgePadding(): Modifier =
+        this.then(Modifier.windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)))
 
 }

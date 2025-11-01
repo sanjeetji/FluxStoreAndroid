@@ -31,29 +31,34 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // ---- Transparent system bars (edge-to-edge) ----
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(Color.Transparent.toArgb(), Color.Transparent.toArgb()),
-            navigationBarStyle = SystemBarStyle.auto(Color.Transparent.toArgb(), Color.Transparent.toArgb()),
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = Color.Transparent.toArgb(),
+                darkScrim = Color.Transparent.toArgb()
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                lightScrim = Color.Transparent.toArgb(),
+                darkScrim = Color.Transparent.toArgb()
+            )
         )
+        // Allow drawing behind system bars
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            ComposeAppTheme {
-                val strings by locMgr.strings.collectAsState()
-                val bottomBarVisible = rememberSaveable { mutableStateOf(false) }
-                val isDarkTheme      = rememberSaveable { mutableStateOf(false) }
-                CompositionLocalProvider(
-                    LocalStrings provides strings,
-                    LocalLocalizationManager provides locMgr,
-                    LocalBottomBarVisible provides bottomBarVisible,
-                    LocalIsDarkTheme        provides isDarkTheme
-                ) {
-                    ComposeAppTheme(darkTheme = isDarkTheme.value) {
-                        val navController = rememberNavController()
-                        AppNavigation(
-                            navController = navController,
-                        )
-                    }
+            // Use theme-controlled dark mode
+            val isDarkTheme = rememberSaveable { mutableStateOf(false) }
+            val bottomBarVisible = rememberSaveable { mutableStateOf(false) }
+
+            CompositionLocalProvider(
+                LocalIsDarkTheme provides isDarkTheme,
+                LocalBottomBarVisible provides bottomBarVisible,
+                LocalLocalizationManager provides locMgr,
+                LocalStrings provides locMgr.strings.collectAsState().value
+            ) {
+                ComposeAppTheme(darkTheme = isDarkTheme.value) {
+                    val navController = rememberNavController()
+                    AppNavigation(navController = navController)
                 }
             }
         }

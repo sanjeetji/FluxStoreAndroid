@@ -11,25 +11,49 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val homeRepository: HomeRepository): ViewModel() {
+open class HomeViewModel @Inject constructor(
+    private val homeRepository: HomeRepository
+) : ViewModel() {
+
+    // ---------- PUBLIC flows that the UI reads ----------
+    private val _categoryData = MutableStateFlow<List<Category>>(emptyList())
+    val categoryData: StateFlow<List<Category>> = _categoryData
+
+    private val _homeBannerData = MutableStateFlow<List<HomePageData>>(emptyList())
+    val homeBannerData: StateFlow<List<HomePageData>> = _homeBannerData
+
+    private val _exploreData = MutableStateFlow<List<ExploreData>>(emptyList())
+    val explorePageData: StateFlow<List<ExploreData>> = _exploreData
 
     private val _showBottomBar = MutableStateFlow(false)
     val showBottomBar: StateFlow<Boolean> = _showBottomBar
 
-    val categoryData : StateFlow<List<Category>> = homeRepository.categoryData
-    val homeBannerData : StateFlow<List<HomePageData>> = homeRepository.homePageData
-    val explorePageData : StateFlow<List<ExploreData>> = homeRepository.exploreData
+    // ----------------------------------------------------
+    // Real data (network) – only used at runtime
+    // ----------------------------------------------------
+    init {
+        // In real app you would collect from repository here
+        // For preview we override the flows manually (see preview)
+        _categoryData.value = homeRepository.categoryData.value
+        _homeBannerData.value = homeRepository.homePageData.value
+        _exploreData.value = homeRepository.exploreData.value
+    }
 
     fun setShowBottomBar(visible: Boolean) {
         _showBottomBar.value = visible
     }
 
-    private val _isDark = MutableStateFlow(false)
-    val isDark: StateFlow<Boolean> = _isDark
-
-    fun setDark(dark: Boolean) {
-        _isDark.value = dark
+    // ---- Helper for preview only (not used in production) ----
+    internal fun previewInjectData(
+        categories: List<Category>,
+        pageData: List<HomePageData>,
+        exploreData: List<ExploreData>,
+        bottomBar: Boolean = true
+    ) {
+        _categoryData.value = categories
+        _homeBannerData.value = pageData
+        _exploreData.value = exploreData
+        _showBottomBar.value = bottomBar
     }
-
 
 }

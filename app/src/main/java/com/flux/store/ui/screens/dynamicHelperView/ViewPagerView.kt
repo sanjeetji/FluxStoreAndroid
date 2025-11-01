@@ -41,7 +41,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.flux.store.R
-import com.flux.store.model.response.DataHeader
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.dataForBannerInSideTitle
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -168,17 +169,22 @@ fun ViewPagerView(viewPagerData: List<HomeBanner>) {
     }
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true, name = "Banner – Light")
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES,
+    name = "Banner – Dark"
+)
 @Composable
 private fun ViewPagerViewPreview() {
-    ViewPagerView(
-        listOf(
-            HomeBanner(
-                bannerId = 1,
-                bannerTitle = "Banner Title",
-                bannerDescription = "This text is for banner description",
-                bannerImage = "https://images.unsplash.com/photo-1583316174775-bd6dc0e9f298?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    FakePreview(
+        fakeData = dataForBannerInSideTitle,
+        useUiState = false,          // direct data, no ViewModel
+        onSuccess = { banner ->
+            ViewPagerView(
+                listOf(banner)
             )
-        )
+        }
     )
 }

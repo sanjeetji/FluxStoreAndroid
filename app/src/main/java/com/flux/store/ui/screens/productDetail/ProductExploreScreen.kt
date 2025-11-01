@@ -64,6 +64,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.flux.store.R
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.exploreItemFakeData
+import com.flux.store.fakeData.fakeNetwork.homeCategoryFakeData
+import com.flux.store.fakeData.fakeNetwork.homePageFakeData
 import com.flux.store.helper.Helper.twoUpCardWidth
 import com.flux.store.helper.HomeScreenEnum
 import com.flux.store.helper.LocalBottomBarVisible
@@ -71,7 +75,6 @@ import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.repository.ProductRepository
 import com.flux.store.ui.screens.dynamicHelperView.BannerOutsideTitle
-import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.ProductListViewModel
 import kotlin.collections.chunked
 
@@ -114,6 +117,7 @@ fun ProductExploreScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 32.dp)
             .background(color = MaterialTheme.colorScheme.primary)
     )
     {
@@ -490,21 +494,37 @@ fun ProductExploreScreen(
     }
 }
 
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Home – Light")
+@Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "Home – Dark")
 @Composable
 private fun ProductExploreScreenPreview() {
-    ComposeAppTheme(false) {
-        CompositionLocalProvider(
-            LocalBottomBarVisible provides remember { mutableStateOf(true) },
-            LocalIsDarkTheme provides remember { mutableStateOf(false) }) {
-            val previewVM = remember { ProductListViewModel(ProductRepository()) }
-            ProductExploreScreen(
-                viewModel = previewVM,
-                onNavigate = { route, _, _, _ -> println("Navigating to $route") },
-                navController = rememberNavController(),
-            )
+    FakePreview(
+        fakeData = Unit,
+        useUiState = false,
+        onSuccess = {
+            // ---- Fake ViewModel with instant data ----
+            val fakeVM = remember {
+                object : ProductListViewModel(ProductRepository()) {
+                    init {
+                        previewInjectData(
+                            categories = homeCategoryFakeData,
+                            pageData = homePageFakeData,
+                            exploreData = exploreItemFakeData,
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalBottomBarVisible provides remember { mutableStateOf(true) },
+                LocalIsDarkTheme provides remember { mutableStateOf(false) }
+            ) {
+                ProductExploreScreen(
+                    viewModel = fakeVM,
+                    onNavigate = { route, _, _, _ -> println("Navigating to $route") },
+                    navController = rememberNavController(),
+                )
+            }
         }
-    }
+    )
 }

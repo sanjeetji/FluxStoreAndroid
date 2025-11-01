@@ -1,6 +1,5 @@
 package com.flux.store.ui.screens.productDetail
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -28,9 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,11 +40,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -64,6 +58,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.flux.store.R
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.exploreItemFakeData
+import com.flux.store.fakeData.fakeNetwork.homeCategoryFakeData
+import com.flux.store.fakeData.fakeNetwork.homePageFakeData
 import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.model.response.BannerCategory
@@ -71,7 +69,6 @@ import com.flux.store.model.response.BannerData
 import com.flux.store.navigation.routes.ProductDetailsRoutes
 import com.flux.store.repository.ProductRepository
 import com.flux.store.ui.screens.dynamicHelperView.StarRatingBar
-import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.ProductListViewModel
 
 @Composable
@@ -126,7 +123,7 @@ fun ProductListScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
         Spacer(modifier = Modifier.height(4.dp))
         Row(
@@ -378,20 +375,37 @@ fun ProductListItem(
 }
 
 
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Home – Light")
+@Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "Home – Dark")
 @Composable
 private fun ProductListScreenPreview() {
-    ComposeAppTheme(false) {
-        CompositionLocalProvider(
-            LocalBottomBarVisible provides remember { mutableStateOf(true) },
-            LocalIsDarkTheme provides remember { mutableStateOf(false) }) {
-            val previewVM = remember { ProductListViewModel(ProductRepository()) }
-            ProductListScreen(
-                viewModel = previewVM,
-                onNavigate = { route, _, _, _ -> println("Navigating to $route") },
-                navController = rememberNavController()
-            )
+    FakePreview(
+        fakeData = Unit,
+        useUiState = false,
+        onSuccess = {
+            // ---- Fake ViewModel with instant data ----
+            val fakeVM = remember {
+                object : ProductListViewModel(ProductRepository()) {
+                    init {
+                        previewInjectData(
+                            categories = homeCategoryFakeData,
+                            pageData = homePageFakeData,
+                            exploreData = exploreItemFakeData,
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalBottomBarVisible provides remember { mutableStateOf(true) },
+                LocalIsDarkTheme provides remember { mutableStateOf(false) }
+            ) {
+                ProductListScreen(
+                    viewModel = fakeVM,
+                    onNavigate = { route, _, _, _ -> println("Navigating to $route") },
+                    navController = rememberNavController(),
+                )
+            }
         }
-    }
+    )
 }

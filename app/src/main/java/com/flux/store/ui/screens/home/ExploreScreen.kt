@@ -1,6 +1,5 @@
 package com.flux.store.ui.screens.home
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -57,13 +56,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.flux.store.R
+import com.flux.store.fakeData.fakeNetwork.FakePreview
+import com.flux.store.fakeData.fakeNetwork.exploreItemFakeData
+import com.flux.store.fakeData.fakeNetwork.homeCategoryFakeData
+import com.flux.store.fakeData.fakeNetwork.homePageFakeData
 import com.flux.store.helper.LocalBottomBarVisible
 import com.flux.store.helper.LocalIsDarkTheme
 import com.flux.store.helper.localizationHelper.tr
 import com.flux.store.navigation.routes.HomeRoutes
 import com.flux.store.navigation.routes.ProductDetailsRoutes
 import com.flux.store.repository.HomeRepository
-import com.flux.store.ui.theme.ComposeAppTheme
 import com.flux.store.viewmodel.HomeViewModel
 
 @Composable
@@ -323,21 +325,40 @@ fun ExploreScreenContent(
     }
 }
 
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, name = "Home – Light")
+@Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "Home – Dark")
 @Composable
 private fun ExploreScreenPreview() {
-    ComposeAppTheme(false) {
-        CompositionLocalProvider(
-            LocalBottomBarVisible provides remember { mutableStateOf(true) },
-            LocalIsDarkTheme provides remember { mutableStateOf(false) }) {
-            val previewVM = remember { HomeViewModel(HomeRepository()) }
-            ExploreScreen(
-                viewModel = previewVM,
-                onNavigate = { route, _, _, _ -> println("Navigating to $route") },
-                navController = rememberNavController(),
-                drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-                onMenuClick = {})
+    FakePreview(
+        fakeData = Unit,
+        useUiState = false,
+        onSuccess = {
+            // ---- Fake ViewModel with instant data ----
+            val fakeVM = remember {
+                object : HomeViewModel(HomeRepository()) {
+                    init {
+                        previewInjectData(
+                            categories = homeCategoryFakeData,
+                            pageData = homePageFakeData,
+                            exploreData = exploreItemFakeData,
+                            bottomBar = true
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalBottomBarVisible provides remember { mutableStateOf(true) },
+                LocalIsDarkTheme provides remember { mutableStateOf(false) }
+            ) {
+                ExploreScreen(
+                    viewModel = fakeVM,
+                    onNavigate = { route, _, _, _ -> println("Navigating to $route") },
+                    navController = rememberNavController(),
+                    drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+                    onMenuClick = {}
+                )
+            }
         }
-    }
+    )
 }

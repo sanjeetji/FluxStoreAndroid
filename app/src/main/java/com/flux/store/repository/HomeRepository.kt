@@ -27,6 +27,7 @@ class HomeRepository @Inject constructor() {
     val exploreData: StateFlow<List<ExploreData>> = _exploreData
 
     init {
+
         _categoryData.value = listOf(
             Category(1, "Women",     R.drawable.ic_female),
             Category(2, "Men",       R.drawable.ic_male),
@@ -546,8 +547,6 @@ class HomeRepository @Inject constructor() {
             )
             ),
         )
-
-
 
     }
 
